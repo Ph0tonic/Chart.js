@@ -265,5 +265,24 @@ describe('Chart.registry', function() {
         Chart.registry.getScale('test2');
       }).toThrow();
     });
+
+    it('as native module namespace', function() {
+      // Same shape as `import * as items` in native ES modules: a null-prototype
+      // object tagged '[object Module]'.
+      const items = Object.create(null, {
+        test1: {value: test1, enumerable: true},
+        test2: {value: test2, enumerable: true},
+        [Symbol.toStringTag]: {value: 'Module'}
+      });
+      expect(Object.prototype.toString.call(items)).toBe('[object Module]');
+
+      Chart.register(items);
+      expect(Chart.registry.getController('test1')).toEqual(test1);
+      expect(Chart.registry.getScale('test2')).toEqual(test2);
+      Chart.unregister(items);
+      expect(function() {
+        Chart.registry.getController('test1');
+      }).toThrow();
+    });
   });
 });

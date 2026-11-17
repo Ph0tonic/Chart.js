@@ -131,7 +131,9 @@ export class Registry {
         // Use case:
         //  import * as plugins from './plugins.js';
         //  Chart.register(plugins);
-        each(arg, item => {
+        // Native module namespaces are tagged '[object Module]', which each()
+        // does not iterate: copy them into a plain object first.
+        each(arg[Symbol.toStringTag] === 'Module' ? {...arg} : arg, item => {
           // If there are mixed types in the loopable, make sure those are
           // registered in correct registry
           // Use case: (treemap exporting controller, elements etc)
