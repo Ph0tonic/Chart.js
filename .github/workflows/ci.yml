@@ -50,7 +50,7 @@ jobs:
               - 'package.json'
             test:
               - 'test/**'
-              - 'karma.conf.js'
+              - 'vitest.config.js'
               - 'package.json'
             types:
               - 'package.json'
@@ -69,35 +69,28 @@ jobs:
         run: |
           pnpm run build
           if [ "${{ runner.os }}" == "macOS" ]; then
-            pnpm run test-ci --browsers chrome,safari
+            export BROWSERS=chromium,webkit
           else
-            xvfb-run --auto-servernum pnpm run test-ci
+            export BROWSERS=chromium,firefox
           fi
+          pnpm exec playwright install --with-deps ${BROWSERS//,/ }
+          pnpm run test-ci
         shell: bash
       - name: Package
         if: steps.changes.outputs.docs == 'true'
         run: |
           pnpm run docs
           pnpm pack
-      - name: Coveralls Parallel - Chrome
+      - name: Coveralls Parallel
         if: |
           steps.changes.outputs.src == 'true' &&
           runner.os != 'Windows'
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.github_token }}
-          path-to-lcov: './coverage/chrome/lcov.info'
-          flag-name: ${{ matrix.os }}-chrome
-          parallel: true
-      - name: Coveralls Parallel - Firefox
-        if: |
-          steps.changes.outputs.src == 'true' &&
-          runner.os != 'Windows'
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.github_token }}
-          path-to-lcov: './coverage/firefox/lcov.info'
-          flag-name: ${{ matrix.os }}-firefox
+          # Vitest merges the coverage of every browser into one report.
+          path-to-lcov: './coverage/lcov.info'
+          flag-name: ${{ matrix.os }}
           parallel: true
 
   finish:

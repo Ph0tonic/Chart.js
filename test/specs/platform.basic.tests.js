@@ -17,28 +17,30 @@ describe('Platform.basic', function() {
   });
 
 
-  it('supports choosing the BasicPlatform in a web worker', function(done) {
+  it('supports choosing the BasicPlatform in a web worker', function(ctx) {
     const canvas = document.createElement('canvas');
     if (!canvas.transferControlToOffscreen) {
-      pending();
+      ctx.skip();
     }
     const offscreenCanvas = canvas.transferControlToOffscreen();
 
-    const worker = new Worker('base/test/BasicChartWebWorker.js');
-    worker.onmessage = (event) => {
-      worker.terminate();
-      const {type, errorMessage} = event.data;
-      if (type === 'error') {
-        done.fail(errorMessage);
-      } else if (type === 'success') {
-        expect(type).toEqual('success');
-        done();
-      } else {
-        done.fail('invalid message type sent by worker: ' + type);
-      }
-    };
+    return new Promise((resolve, reject) => {
+      const worker = new Worker(new URL('../BasicChartWebWorker.js', import.meta.url), {type: 'module'});
+      worker.onmessage = (event) => {
+        worker.terminate();
+        const {type, errorMessage} = event.data;
+        if (type === 'error') {
+          reject(new Error(errorMessage));
+        } else if (type === 'success') {
+          expect(type).toEqual('success');
+          resolve();
+        } else {
+          reject(new Error('invalid message type sent by worker: ' + type));
+        }
+      };
 
-    worker.postMessage({type: 'initialize', canvas: offscreenCanvas}, [offscreenCanvas]);
+      worker.postMessage({type: 'initialize', canvas: offscreenCanvas}, [offscreenCanvas]);
+    });
   });
 
   describe('with offscreenCanvas', function() {

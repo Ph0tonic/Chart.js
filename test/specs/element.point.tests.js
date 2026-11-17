@@ -1,5 +1,5 @@
 describe('Chart.elements.PointElement', function() {
-  describe('auto', jasmine.fixture.specs('element.point'));
+  describe('auto', specsFromFixtures('element.point'));
 
   it ('Should correctly identify as in range', function() {
     // Mock out the point as if we were made by the controller

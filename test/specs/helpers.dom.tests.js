@@ -17,7 +17,7 @@ describe('DOM helpers tests', function() {
     var innerDiv = document.createElement('div');
     div.appendChild(innerDiv);
 
-    expect(helpers.getMaximumSize(innerDiv)).toEqual(jasmine.objectContaining({width: 200, height: 300}));
+    expect(helpers.getMaximumSize(innerDiv)).toEqual(expect.objectContaining({width: 200, height: 300}));
 
     document.body.removeChild(div);
   });
@@ -41,7 +41,7 @@ describe('DOM helpers tests', function() {
     var innerDiv = document.createElement('div');
     shadow.appendChild(innerDiv);
 
-    expect(helpers.getMaximumSize(innerDiv)).toEqual(jasmine.objectContaining({width: 200, height: 300}));
+    expect(helpers.getMaximumSize(innerDiv)).toEqual(expect.objectContaining({width: 200, height: 300}));
 
     document.body.removeChild(div);
   });
@@ -59,7 +59,7 @@ describe('DOM helpers tests', function() {
     innerDiv.style.maxWidth = '150px';
     div.appendChild(innerDiv);
 
-    expect(helpers.getMaximumSize(innerDiv)).toEqual(jasmine.objectContaining({width: 150}));
+    expect(helpers.getMaximumSize(innerDiv)).toEqual(expect.objectContaining({width: 150}));
 
     document.body.removeChild(div);
   });
@@ -77,7 +77,7 @@ describe('DOM helpers tests', function() {
     innerDiv.style.maxHeight = '150px';
     div.appendChild(innerDiv);
 
-    expect(helpers.getMaximumSize(innerDiv)).toEqual(jasmine.objectContaining({height: 150}));
+    expect(helpers.getMaximumSize(innerDiv)).toEqual(expect.objectContaining({height: 150}));
 
     document.body.removeChild(div);
   });
@@ -99,7 +99,7 @@ describe('DOM helpers tests', function() {
     var innerDiv = document.createElement('div');
     parentDiv.appendChild(innerDiv);
 
-    expect(helpers.getMaximumSize(innerDiv)).toEqual(jasmine.objectContaining({width: 150}));
+    expect(helpers.getMaximumSize(innerDiv)).toEqual(expect.objectContaining({width: 150}));
 
     document.body.removeChild(div);
   });
@@ -122,7 +122,7 @@ describe('DOM helpers tests', function() {
     innerDiv.style.height = '300px'; // make it large
     parentDiv.appendChild(innerDiv);
 
-    expect(helpers.getMaximumSize(innerDiv)).toEqual(jasmine.objectContaining({height: 150}));
+    expect(helpers.getMaximumSize(innerDiv)).toEqual(expect.objectContaining({height: 150}));
 
     document.body.removeChild(div);
   });
@@ -140,7 +140,7 @@ describe('DOM helpers tests', function() {
     innerDiv.style.maxWidth = '50%';
     div.appendChild(innerDiv);
 
-    expect(helpers.getMaximumSize(innerDiv)).toEqual(jasmine.objectContaining({width: 100}));
+    expect(helpers.getMaximumSize(innerDiv)).toEqual(expect.objectContaining({width: 100}));
 
     document.body.removeChild(div);
   });
@@ -158,7 +158,7 @@ describe('DOM helpers tests', function() {
     innerDiv.style.maxHeight = '50%';
     div.appendChild(innerDiv);
 
-    expect(helpers.getMaximumSize(innerDiv)).toEqual(jasmine.objectContaining({height: 150}));
+    expect(helpers.getMaximumSize(innerDiv)).toEqual(expect.objectContaining({height: 150}));
 
     document.body.removeChild(div);
   });
@@ -180,7 +180,7 @@ describe('DOM helpers tests', function() {
     var innerDiv = document.createElement('div');
     parentDiv.appendChild(innerDiv);
 
-    expect(helpers.getMaximumSize(innerDiv)).toEqual(jasmine.objectContaining({width: 100}));
+    expect(helpers.getMaximumSize(innerDiv)).toEqual(expect.objectContaining({width: 100}));
 
     document.body.removeChild(div);
   });
@@ -202,7 +202,7 @@ describe('DOM helpers tests', function() {
     innerDiv.style.height = '300px'; // make it large
     parentDiv.appendChild(innerDiv);
 
-    expect(helpers.getMaximumSize(innerDiv)).toEqual(jasmine.objectContaining({height: 150}));
+    expect(helpers.getMaximumSize(innerDiv)).toEqual(expect.objectContaining({height: 150}));
 
     document.body.removeChild(div);
   });
@@ -224,15 +224,15 @@ describe('DOM helpers tests', function() {
     innerDiv.appendChild(canvas);
 
     // No padding
-    expect(helpers.getMaximumSize(canvas)).toEqual(jasmine.objectContaining({width: 300}));
+    expect(helpers.getMaximumSize(canvas)).toEqual(expect.objectContaining({width: 300}));
 
     // test with percentage
     innerDiv.style.padding = '5%';
-    expect(helpers.getMaximumSize(canvas)).toEqual(jasmine.objectContaining({width: 270}));
+    expect(helpers.getMaximumSize(canvas)).toEqual(expect.objectContaining({width: 270}));
 
     // test with pixels
     innerDiv.style.padding = '10px';
-    expect(helpers.getMaximumSize(canvas)).toEqual(jasmine.objectContaining({width: 280}));
+    expect(helpers.getMaximumSize(canvas)).toEqual(expect.objectContaining({width: 280}));
 
     document.body.removeChild(div);
   });
@@ -446,7 +446,7 @@ describe('DOM helpers tests', function() {
         });
 
       const point = chart.getDatasetMeta(0).data[1];
-      await jasmine.triggerMouseEvent(chart, 'mousemove', point);
+      await triggerMouseEvent(chart, 'mousemove', point);
 
       expect(dataX).not.toEqual(NaN);
       expect(dataY).not.toEqual(NaN);
@@ -470,7 +470,7 @@ describe('DOM helpers tests', function() {
         });
 
       const point = chart.getDatasetMeta(0).data[1];
-      const nativeEvent = await jasmine.triggerMouseEvent(chart, 'mousemove', point);
+      const nativeEvent = await triggerMouseEvent(chart, 'mousemove', point);
       const nativePosition = Chart.helpers.getRelativePosition(nativeEvent, chart);
 
       expect(chartPosition).not.toBeNull();
@@ -490,7 +490,7 @@ describe('DOM helpers tests', function() {
     target.style.height = '500px';
     container.appendChild(target);
 
-    expect(helpers.getMaximumSize(target, 200, 500, 1)).toEqual(jasmine.objectContaining({width: 200, height: 200}));
+    expect(helpers.getMaximumSize(target, 200, 500, 1)).toEqual(expect.objectContaining({width: 200, height: 200}));
 
     document.body.removeChild(container);
   });
@@ -507,7 +507,7 @@ describe('DOM helpers tests', function() {
     target.style.height = '500px';
     container.appendChild(target);
 
-    expect(helpers.getMaximumSize(target, 500, 200, 1)).toEqual(jasmine.objectContaining({width: 200, height: 200}));
+    expect(helpers.getMaximumSize(target, 500, 200, 1)).toEqual(expect.objectContaining({width: 200, height: 200}));
 
     document.body.removeChild(container);
   });
@@ -524,7 +524,7 @@ describe('DOM helpers tests', function() {
     target.style.height = '500px';
     container.appendChild(target);
 
-    expect(helpers.getMaximumSize(target, undefined, undefined, 1)).toEqual(jasmine.objectContaining({width: 500, height: 500}));
+    expect(helpers.getMaximumSize(target, undefined, undefined, 1)).toEqual(expect.objectContaining({width: 500, height: 500}));
 
     document.body.removeChild(container);
   });
@@ -541,7 +541,7 @@ describe('DOM helpers tests', function() {
     target.style.height = '100px';
     container.appendChild(target);
 
-    expect(helpers.getMaximumSize(target, undefined, undefined, 2)).toEqual(jasmine.objectContaining({width: 800, height: 400}));
+    expect(helpers.getMaximumSize(target, undefined, undefined, 2)).toEqual(expect.objectContaining({width: 800, height: 400}));
 
     document.body.removeChild(container);
   });

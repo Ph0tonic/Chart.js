@@ -10,8 +10,8 @@ describe('Chart.animations', function() {
         duration: 2000
       }
     });
-    expect(anims._properties.get('property1')).toEqual(jasmine.objectContaining({duration: 1000}));
-    expect(anims._properties.get('property2')).toEqual(jasmine.objectContaining({duration: 2000}));
+    expect(anims._properties.get('property1')).toEqual(expect.objectContaining({duration: 1000}));
+    expect(anims._properties.get('property2')).toEqual(expect.objectContaining({duration: 2000}));
   });
 
   it('should ignore duplicate definitions from collections', function() {
@@ -26,8 +26,8 @@ describe('Chart.animations', function() {
         duration: 2000
       }
     });
-    expect(anims._properties.get('property1')).toEqual(jasmine.objectContaining({duration: 1000}));
-    expect(anims._properties.get('property2')).toEqual(jasmine.objectContaining({duration: 2000}));
+    expect(anims._properties.get('property1')).toEqual(expect.objectContaining({duration: 1000}));
+    expect(anims._properties.get('property2')).toEqual(expect.objectContaining({duration: 2000}));
   });
 
   it('should not animate undefined options key', function() {
@@ -56,120 +56,126 @@ describe('Chart.animations', function() {
     const anims = new Chart.Animations(chart, {option: {duration: 200}});
     const options = {option: 0, $shared: true};
     const target = {options};
-    expect(anims.update(target, {options: {option: 1}})).toBeTrue();
-    expect(target.options.$shared).not.toBeTrue();
-    expect(target.options !== options).toBeTrue();
+    expect(anims.update(target, {options: {option: 1}})).toBe(true);
+    expect(target.options.$shared).not.toBe(true);
+    expect(target.options !== options).toBe(true);
   });
 
-  it('should assign shared options to target after animations complete', function(done) {
-    const chart = {
-      draw: function() {},
-      options: {}
-    };
-    const anims = new Chart.Animations(chart, {value: {duration: 100}, option: {duration: 200}});
+  it('should assign shared options to target after animations complete', function() {
+    return new Promise(done => {
+      const chart = {
+        draw: function() {},
+        options: {}
+      };
+      const anims = new Chart.Animations(chart, {value: {duration: 100}, option: {duration: 200}});
 
-    const target = {
-      value: 1,
-      options: {
-        option: 2
-      }
-    };
-    const sharedOpts = {option: 10, $shared: true};
-
-    expect(anims.update(target, {
-      options: sharedOpts
-    })).toBeTrue();
-
-    expect(target.options !== sharedOpts).toBeTrue();
-
-    Chart.animator.start(chart);
-
-    setTimeout(function() {
-      expect(Chart.animator.running(chart)).toBeFalse();
-      expect(target.options === sharedOpts).toBeTrue();
-
-      Chart.animator.remove(chart);
-      done();
-    }, 300);
-  });
-
-  it('should not assign shared options to target when animations are cancelled', function(done) {
-    const chart = {
-      draw: function() {},
-      options: {}
-    };
-    const anims = new Chart.Animations(chart, {value: {duration: 100}, option: {duration: 200}});
-
-    const target = {
-      value: 1,
-      options: {
-        option: 2
-      }
-    };
-    const sharedOpts = {option: 10, $shared: true};
-
-    expect(anims.update(target, {
-      options: sharedOpts
-    })).toBeTrue();
-
-    expect(target.options !== sharedOpts).toBeTrue();
-
-    Chart.animator.start(chart);
-
-    setTimeout(function() {
-      expect(Chart.animator.running(chart)).toBeTrue();
-      Chart.animator.stop(chart);
-      expect(Chart.animator.running(chart)).toBeFalse();
-
-      setTimeout(function() {
-        expect(target.options === sharedOpts).toBeFalse();
-
-        Chart.animator.remove(chart);
-        done();
-      }, 250);
-    }, 50);
-  });
-
-  it('should assign final shared options to target after animations complete', function(done) {
-    const chart = {
-      draw: function() {},
-      options: {}
-    };
-    const anims = new Chart.Animations(chart, {value: {duration: 100}, option: {duration: 200}});
-
-    const origOpts = {option: 2};
-    const target = {
-      value: 1,
-      options: origOpts
-    };
-    const sharedOpts = {option: 10, $shared: true};
-    const sharedOpts2 = {option: 20, $shared: true};
-
-    expect(anims.update(target, {
-      options: sharedOpts
-    })).toBeTrue();
-
-    expect(target.options !== sharedOpts).toBeTrue();
-
-    Chart.animator.start(chart);
-
-    setTimeout(function() {
-      expect(Chart.animator.running(chart)).toBeTrue();
-
-      expect(target.options === origOpts).toBeTrue();
+      const target = {
+        value: 1,
+        options: {
+          option: 2
+        }
+      };
+      const sharedOpts = {option: 10, $shared: true};
 
       expect(anims.update(target, {
-        options: sharedOpts2
-      })).toBeUndefined();
+        options: sharedOpts
+      })).toBe(true);
 
-      expect(target.options === origOpts).toBeTrue();
+      expect(target.options !== sharedOpts).toBe(true);
+
+      Chart.animator.start(chart);
 
       setTimeout(function() {
-        expect(target.options === sharedOpts2).toBeTrue();
+        expect(Chart.animator.running(chart)).toBe(false);
+        expect(target.options === sharedOpts).toBe(true);
 
         Chart.animator.remove(chart);
         done();
-      }, 250);
-    }, 50);
+      }, 300);
+    });
+  });
+
+  it('should not assign shared options to target when animations are cancelled', function() {
+    return new Promise(done => {
+      const chart = {
+        draw: function() {},
+        options: {}
+      };
+      const anims = new Chart.Animations(chart, {value: {duration: 100}, option: {duration: 200}});
+
+      const target = {
+        value: 1,
+        options: {
+          option: 2
+        }
+      };
+      const sharedOpts = {option: 10, $shared: true};
+
+      expect(anims.update(target, {
+        options: sharedOpts
+      })).toBe(true);
+
+      expect(target.options !== sharedOpts).toBe(true);
+
+      Chart.animator.start(chart);
+
+      setTimeout(function() {
+        expect(Chart.animator.running(chart)).toBe(true);
+        Chart.animator.stop(chart);
+        expect(Chart.animator.running(chart)).toBe(false);
+
+        setTimeout(function() {
+          expect(target.options === sharedOpts).toBe(false);
+
+          Chart.animator.remove(chart);
+          done();
+        }, 250);
+      }, 50);
+    });
+  });
+
+  it('should assign final shared options to target after animations complete', function() {
+    return new Promise(done => {
+      const chart = {
+        draw: function() {},
+        options: {}
+      };
+      const anims = new Chart.Animations(chart, {value: {duration: 100}, option: {duration: 200}});
+
+      const origOpts = {option: 2};
+      const target = {
+        value: 1,
+        options: origOpts
+      };
+      const sharedOpts = {option: 10, $shared: true};
+      const sharedOpts2 = {option: 20, $shared: true};
+
+      expect(anims.update(target, {
+        options: sharedOpts
+      })).toBe(true);
+
+      expect(target.options !== sharedOpts).toBe(true);
+
+      Chart.animator.start(chart);
+
+      setTimeout(function() {
+        expect(Chart.animator.running(chart)).toBe(true);
+
+        expect(target.options === origOpts).toBe(true);
+
+        expect(anims.update(target, {
+          options: sharedOpts2
+        })).toBeUndefined();
+
+        expect(target.options === origOpts).toBe(true);
+
+        setTimeout(function() {
+          expect(target.options === sharedOpts2).toBe(true);
+
+          Chart.animator.remove(chart);
+          done();
+        }, 250);
+      }, 50);
+    });
   });
 });

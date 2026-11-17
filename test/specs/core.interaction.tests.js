@@ -1,9 +1,9 @@
 describe('Core.Interaction', function() {
-  describe('auto', jasmine.fixture.specs('core.interaction'));
+  describe('auto', specsFromFixtures('core.interaction'));
 
   describe('point mode', function() {
-    beforeEach(function() {
-      this.chart = window.acquireChart({
+    beforeEach(function(ctx) {
+      ctx.chart = window.acquireChart({
         type: 'line',
         data: {
           datasets: [{
@@ -22,8 +22,8 @@ describe('Core.Interaction', function() {
       });
     });
 
-    it ('should return all items under the point', function() {
-      var chart = this.chart;
+    it ('should return all items under the point', function(ctx) {
+      var chart = ctx.chart;
       var meta0 = chart.getDatasetMeta(0);
       var meta1 = chart.getDatasetMeta(1);
       var point = meta0.data[1];
@@ -40,8 +40,8 @@ describe('Core.Interaction', function() {
       expect(elements).toEqual([point, meta1.data[1]]);
     });
 
-    it ('should return an empty array when no items are found', function() {
-      var chart = this.chart;
+    it ('should return an empty array when no items are found', function(ctx) {
+      var chart = ctx.chart;
       var evt = {
         type: 'click',
         chart: chart,
@@ -57,8 +57,8 @@ describe('Core.Interaction', function() {
 
   describe('index mode', function() {
     describe('intersect: true', function() {
-      beforeEach(function() {
-        this.chart = window.acquireChart({
+      beforeEach(function(ctx) {
+        ctx.chart = window.acquireChart({
           type: 'line',
           data: {
             datasets: [{
@@ -77,8 +77,8 @@ describe('Core.Interaction', function() {
         });
       });
 
-      it ('gets correct items', function() {
-        var chart = this.chart;
+      it ('gets correct items', function(ctx) {
+        var chart = ctx.chart;
         var meta0 = chart.getDatasetMeta(0);
         var meta1 = chart.getDatasetMeta(1);
         var point = meta0.data[1];
@@ -95,8 +95,8 @@ describe('Core.Interaction', function() {
         expect(elements).toEqual([point, meta1.data[1]]);
       });
 
-      it ('returns empty array when nothing found', function() {
-        var chart = this.chart;
+      it ('returns empty array when nothing found', function(ctx) {
+        var chart = ctx.chart;
         var evt = {
           type: 'click',
           chart: chart,
@@ -126,15 +126,15 @@ describe('Core.Interaction', function() {
         labels: ['Point 1', 'Point 2', 'Point 3']
       };
 
-      beforeEach(function() {
-        this.chart = window.acquireChart({
+      beforeEach(function(ctx) {
+        ctx.chart = window.acquireChart({
           type: 'line',
           data: data
         });
       });
 
-      it ('axis: x gets correct items', function() {
-        var chart = this.chart;
+      it ('axis: x gets correct items', function(ctx) {
+        var chart = ctx.chart;
         var meta0 = chart.getDatasetMeta(0);
         var meta1 = chart.getDatasetMeta(1);
 
@@ -175,8 +175,8 @@ describe('Core.Interaction', function() {
         expect(elements).toEqual([meta0.data[0], meta1.data[0]]);
       });
 
-      it ('axis: xy gets correct items', function() {
-        var chart = this.chart;
+      it ('axis: xy gets correct items', function(ctx) {
+        var chart = ctx.chart;
         var meta0 = chart.getDatasetMeta(0);
         var meta1 = chart.getDatasetMeta(1);
 
@@ -196,8 +196,8 @@ describe('Core.Interaction', function() {
 
   describe('dataset mode', function() {
     describe('intersect: true', function() {
-      beforeEach(function() {
-        this.chart = window.acquireChart({
+      beforeEach(function(ctx) {
+        ctx.chart = window.acquireChart({
           type: 'line',
           data: {
             datasets: [{
@@ -216,8 +216,8 @@ describe('Core.Interaction', function() {
         });
       });
 
-      it ('should return all items in the dataset of the first item found', function() {
-        var chart = this.chart;
+      it ('should return all items in the dataset of the first item found', function(ctx) {
+        var chart = ctx.chart;
         var meta = chart.getDatasetMeta(0);
         var point = meta.data[1];
 
@@ -233,8 +233,8 @@ describe('Core.Interaction', function() {
         expect(elements).toEqual(meta.data);
       });
 
-      it ('should return an empty array if nothing found', function() {
-        var chart = this.chart;
+      it ('should return an empty array if nothing found', function(ctx) {
+        var chart = ctx.chart;
         var evt = {
           type: 'click',
           chart: chart,
@@ -264,8 +264,8 @@ describe('Core.Interaction', function() {
         labels: ['Point 1', 'Point 2', 'Point 3']
       };
 
-      beforeEach(function() {
-        this.chart = window.acquireChart({
+      beforeEach(function(ctx) {
+        ctx.chart = window.acquireChart({
           type: 'line',
           data: data
         });
@@ -292,8 +292,8 @@ describe('Core.Interaction', function() {
         expect(elements).toEqual(chart.getDatasetMeta(0).data);
       });
 
-      it ('axis: y gets correct items', function() {
-        var chart = this.chart;
+      it ('axis: y gets correct items', function(ctx) {
+        var chart = ctx.chart;
         var evt = {
           type: 'click',
           chart: chart,
@@ -306,8 +306,8 @@ describe('Core.Interaction', function() {
         expect(elements).toEqual(chart.getDatasetMeta(1).data);
       });
 
-      it ('axis: xy gets correct items', function() {
-        var chart = this.chart;
+      it ('axis: xy gets correct items', function(ctx) {
+        var chart = ctx.chart;
         var evt = {
           type: 'click',
           chart: chart,
@@ -324,8 +324,8 @@ describe('Core.Interaction', function() {
 
   describe('nearest mode', function() {
     describe('intersect: false', function() {
-      beforeEach(function() {
-        this.lineChart = window.acquireChart({
+      beforeEach(function(ctx) {
+        ctx.lineChart = window.acquireChart({
           type: 'line',
           data: {
             datasets: [{
@@ -344,7 +344,7 @@ describe('Core.Interaction', function() {
             labels: ['Point 1', 'Point 2', 'Point 3']
           }
         });
-        this.polarChart = window.acquireChart({
+        ctx.polarChart = window.acquireChart({
           type: 'polarArea',
           data: {
             datasets: [{
@@ -363,8 +363,8 @@ describe('Core.Interaction', function() {
       });
 
       describe('axis: xy', function() {
-        it ('should return the nearest item', function() {
-          var chart = this.lineChart;
+        it ('should return the nearest item', function(ctx) {
+          var chart = ctx.lineChart;
           var evt = {
             type: 'click',
             chart: chart,
@@ -379,8 +379,8 @@ describe('Core.Interaction', function() {
           expect(elements).toEqual([meta.data[0]]);
         });
 
-        it ('should return all items at the same nearest distance', function() {
-          var chart = this.lineChart;
+        it ('should return all items at the same nearest distance', function(ctx) {
+          var chart = ctx.lineChart;
           var meta0 = chart.getDatasetMeta(0);
           var meta1 = chart.getDatasetMeta(1);
 
@@ -405,8 +405,8 @@ describe('Core.Interaction', function() {
       });
 
       describe('axis: x', function() {
-        it ('should return all items at current x', function() {
-          var chart = this.lineChart;
+        it ('should return all items at current x', function(ctx) {
+          var chart = ctx.lineChart;
           var meta0 = chart.getDatasetMeta(0);
           var meta1 = chart.getDatasetMeta(1);
 
@@ -429,8 +429,8 @@ describe('Core.Interaction', function() {
           expect(elements).toEqual([meta0.data[1], meta1.data[1]]);
         });
 
-        it ('should return all items at nearest x-distance', function() {
-          var chart = this.lineChart;
+        it ('should return all items at nearest x-distance', function(ctx) {
+          var chart = ctx.lineChart;
           var meta0 = chart.getDatasetMeta(0);
           var meta1 = chart.getDatasetMeta(1);
 
@@ -455,8 +455,8 @@ describe('Core.Interaction', function() {
       });
 
       describe('axis: y', function() {
-        it ('should return item with value 30', function() {
-          var chart = this.lineChart;
+        it ('should return item with value 30', function(ctx) {
+          var chart = ctx.lineChart;
           var meta0 = chart.getDatasetMeta(0);
 
           // 'Point 1', y = 30
@@ -478,8 +478,8 @@ describe('Core.Interaction', function() {
           expect(elements).toEqual([meta0.data[2]]);
         });
 
-        it ('should return all items at value 40', function() {
-          var chart = this.lineChart;
+        it ('should return all items at value 40', function(ctx) {
+          var chart = ctx.lineChart;
           var meta0 = chart.getDatasetMeta(0);
           var meta1 = chart.getDatasetMeta(1);
 
@@ -504,8 +504,8 @@ describe('Core.Interaction', function() {
       });
 
       describe('axis: r', function() {
-        it ('should return item with value 9', function() {
-          var chart = this.polarChart;
+        it ('should return item with value 9', function(ctx) {
+          var chart = ctx.polarChart;
           var meta0 = chart.getDatasetMeta(0);
 
           var evt = {
@@ -520,8 +520,8 @@ describe('Core.Interaction', function() {
           expect(elements).toEqual([meta0.data[1]]);
         });
 
-        it ('should return item with value 1 when clicked outside of it', function() {
-          var chart = this.polarChart;
+        it ('should return item with value 1 when clicked outside of it', function(ctx) {
+          var chart = ctx.polarChart;
           var meta0 = chart.getDatasetMeta(0);
 
           var evt = {
@@ -539,8 +539,8 @@ describe('Core.Interaction', function() {
     });
 
     describe('intersect: true', function() {
-      beforeEach(function() {
-        this.chart = window.acquireChart({
+      beforeEach(function(ctx) {
+        ctx.chart = window.acquireChart({
           type: 'line',
           data: {
             datasets: [{
@@ -560,8 +560,8 @@ describe('Core.Interaction', function() {
       });
 
       describe('axis=xy', function() {
-        it ('should return the nearest item', function() {
-          var chart = this.chart;
+        it ('should return the nearest item', function(ctx) {
+          var chart = ctx.chart;
           var meta = chart.getDatasetMeta(1);
           var point = meta.data[1];
 
@@ -588,8 +588,8 @@ describe('Core.Interaction', function() {
           expect(elements).toEqual([point]);
         });
 
-        it ('should return the nearest item even if 2 intersect', function() {
-          var chart = this.chart;
+        it ('should return the nearest item even if 2 intersect', function(ctx) {
+          var chart = ctx.chart;
           chart.data.datasets[0].pointRadius = [5, 30, 5];
           chart.data.datasets[0].data[1] = 39;
 
@@ -618,8 +618,8 @@ describe('Core.Interaction', function() {
           expect(elements).toEqual([meta0.data[1]]);
         });
 
-        it ('should return the all items if more than 1 are at the same distance', function() {
-          var chart = this.chart;
+        it ('should return the all items if more than 1 are at the same distance', function(ctx) {
+          var chart = ctx.chart;
           chart.data.datasets[0].pointRadius = [5, 5, 5];
           chart.data.datasets[0].data[1] = 40;
 
@@ -652,8 +652,8 @@ describe('Core.Interaction', function() {
   });
 
   describe('x mode', function() {
-    beforeEach(function() {
-      this.chart = window.acquireChart({
+    beforeEach(function(ctx) {
+      ctx.chart = window.acquireChart({
         type: 'line',
         data: {
           datasets: [{
@@ -674,8 +674,8 @@ describe('Core.Interaction', function() {
       });
     });
 
-    it('should return items at the same x value when intersect is false', function() {
-      var chart = this.chart;
+    it('should return items at the same x value when intersect is false', function(ctx) {
+      var chart = ctx.chart;
       var meta0 = chart.getDatasetMeta(0);
       var meta1 = chart.getDatasetMeta(1);
 
@@ -708,8 +708,8 @@ describe('Core.Interaction', function() {
       expect(elements).toEqual([]);
     });
 
-    it('should return items at the same x value when intersect is true', function() {
-      var chart = this.chart;
+    it('should return items at the same x value when intersect is true', function(ctx) {
+      var chart = ctx.chart;
       var meta0 = chart.getDatasetMeta(0);
       var meta1 = chart.getDatasetMeta(1);
 
@@ -744,8 +744,8 @@ describe('Core.Interaction', function() {
   });
 
   describe('y mode', function() {
-    beforeEach(function() {
-      this.chart = window.acquireChart({
+    beforeEach(function(ctx) {
+      ctx.chart = window.acquireChart({
         type: 'line',
         data: {
           datasets: [{
@@ -766,8 +766,8 @@ describe('Core.Interaction', function() {
       });
     });
 
-    it('should return items at the same y value when intersect is false', function() {
-      var chart = this.chart;
+    it('should return items at the same y value when intersect is false', function(ctx) {
+      var chart = ctx.chart;
       var meta0 = chart.getDatasetMeta(0);
       var meta1 = chart.getDatasetMeta(1);
 
@@ -800,8 +800,8 @@ describe('Core.Interaction', function() {
       expect(elements).toEqual([]);
     });
 
-    it('should return items at the same y value when intersect is true', function() {
-      var chart = this.chart;
+    it('should return items at the same y value when intersect is true', function(ctx) {
+      var chart = ctx.chart;
       var meta0 = chart.getDatasetMeta(0);
       var meta1 = chart.getDatasetMeta(1);
 

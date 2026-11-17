@@ -1,5 +1,5 @@
 describe('Chart.controllers.bar', function() {
-  describe('auto', jasmine.fixture.specs('controller.bar'));
+  describe('auto', specsFromFixtures('controller.bar'));
 
   it('should be registered as dataset controller', function() {
     expect(typeof Chart.controllers.bar).toBe('function');
@@ -654,7 +654,7 @@ describe('Chart.controllers.bar', function() {
       expect(meta.data[i].y).toBeCloseToPixel(expected.y);
       expect(meta.data[i].base).toBeCloseToPixel(1024);
       expect(meta.data[i].width).toBeCloseToPixel(46);
-      expect(meta.data[i].options).toEqual(jasmine.objectContaining({
+      expect(meta.data[i].options).toEqual(expect.objectContaining({
         backgroundColor: 'red',
         borderSkipped: 'top',
         borderColor: 'blue',
@@ -1178,17 +1178,17 @@ describe('Chart.controllers.bar', function() {
 
     var meta = chart.getDatasetMeta(1);
 
-    spyOn(meta.data[0], 'draw');
-    spyOn(meta.data[1], 'draw');
-    spyOn(meta.data[2], 'draw');
-    spyOn(meta.data[3], 'draw');
+    vi.spyOn(meta.data[0], 'draw').mockImplementation(() => {});
+    vi.spyOn(meta.data[1], 'draw').mockImplementation(() => {});
+    vi.spyOn(meta.data[2], 'draw').mockImplementation(() => {});
+    vi.spyOn(meta.data[3], 'draw').mockImplementation(() => {});
 
     chart.update();
 
-    expect(meta.data[0].draw.calls.count()).toBe(1);
-    expect(meta.data[1].draw.calls.count()).toBe(1);
-    expect(meta.data[2].draw.calls.count()).toBe(1);
-    expect(meta.data[3].draw.calls.count()).toBe(1);
+    expect(meta.data[0].draw.mock.calls.length).toBe(1);
+    expect(meta.data[1].draw.mock.calls.length).toBe(1);
+    expect(meta.data[2].draw.mock.calls.length).toBe(1);
+    expect(meta.data[3].draw.mock.calls.length).toBe(1);
   });
 
   it('should set hover styles on bars', function() {
@@ -1310,9 +1310,9 @@ describe('Chart.controllers.bar', function() {
   });
 
   describe('Bar width', function() {
-    beforeEach(function() {
+    beforeEach(function(ctx) {
       // 2 datasets
-      this.data = {
+      ctx.data = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
         datasets: [{
           data: [10, 20, 30, 40, 50, 60, 70],
@@ -1322,8 +1322,8 @@ describe('Chart.controllers.bar', function() {
       };
     });
 
-    afterEach(function() {
-      var chart = window.acquireChart(this.config);
+    afterEach(function(ctx) {
+      var chart = window.acquireChart(ctx.config);
       var meta = chart.getDatasetMeta(0);
       var xScale = chart.scales[meta.xAxisID];
       var options = Chart.defaults.datasets.bar;
@@ -1349,10 +1349,10 @@ describe('Chart.controllers.bar', function() {
 
     });
 
-    it('should correctly set bar width when min and max option is set.', function() {
-      this.config = {
+    it('should correctly set bar width when min and max option is set.', function(ctx) {
+      ctx.config = {
         type: 'bar',
-        data: this.data,
+        data: ctx.data,
         options: {
           scales: {
             x: {
@@ -1364,10 +1364,10 @@ describe('Chart.controllers.bar', function() {
       };
     });
 
-    it('should correctly set bar width when scale are stacked with min and max options.', function() {
-      this.config = {
+    it('should correctly set bar width when scale are stacked with min and max options.', function(ctx) {
+      ctx.config = {
         type: 'bar',
-        data: this.data,
+        data: ctx.data,
         options: {
           scales: {
             x: {
@@ -1384,9 +1384,9 @@ describe('Chart.controllers.bar', function() {
   });
 
   describe('Bar height (horizontal type)', function() {
-    beforeEach(function() {
+    beforeEach(function(ctx) {
       // 2 datasets
-      this.data = {
+      ctx.data = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
         datasets: [{
           data: [10, 20, 30, 40, 50, 60, 70],
@@ -1396,8 +1396,8 @@ describe('Chart.controllers.bar', function() {
       };
     });
 
-    afterEach(function() {
-      var chart = window.acquireChart(this.config);
+    afterEach(function(ctx) {
+      var chart = window.acquireChart(ctx.config);
       var meta = chart.getDatasetMeta(0);
       var yScale = chart.scales[meta.yAxisID];
 
@@ -1423,10 +1423,10 @@ describe('Chart.controllers.bar', function() {
 
     });
 
-    it('should correctly set bar height when min and max option is set.', function() {
-      this.config = {
+    it('should correctly set bar height when min and max option is set.', function(ctx) {
+      ctx.config = {
         type: 'bar',
-        data: this.data,
+        data: ctx.data,
         options: {
           indexAxis: 'y',
           scales: {
@@ -1439,10 +1439,10 @@ describe('Chart.controllers.bar', function() {
       };
     });
 
-    it('should correctly set bar height when scale are stacked with min and max options.', function() {
-      this.config = {
+    it('should correctly set bar height when scale are stacked with min and max options.', function(ctx) {
+      ctx.config = {
         type: 'bar',
-        data: this.data,
+        data: ctx.data,
         options: {
           indexAxis: 'y',
           scales: {
@@ -1462,8 +1462,8 @@ describe('Chart.controllers.bar', function() {
   describe('Bar thickness with a category scale', function() {
     [undefined, 20].forEach(function(barThickness) {
       describe('When barThickness is ' + barThickness, function() {
-        beforeEach(function() {
-          this.chart = window.acquireChart({
+        beforeEach(function(ctx) {
+          ctx.chart = window.acquireChart({
             type: 'bar',
             data: {
               datasets: [{
@@ -1494,8 +1494,8 @@ describe('Chart.controllers.bar', function() {
           });
         });
 
-        it('should correctly set bar width', function() {
-          var chart = this.chart;
+        it('should correctly set bar width', function(ctx) {
+          var chart = ctx.chart;
           var expected, i, ilen, meta;
 
           if (barThickness) {
@@ -1517,8 +1517,8 @@ describe('Chart.controllers.bar', function() {
           }
         });
 
-        it('should correctly set bar width if maxBarThickness is specified', function() {
-          var chart = this.chart;
+        it('should correctly set bar width if maxBarThickness is specified', function(ctx) {
+          var chart = ctx.chart;
           var i, ilen, meta;
 
           chart.data.datasets[0].maxBarThickness = 10;
@@ -1826,7 +1826,7 @@ describe('Chart.controllers.bar', function() {
     const {tooltip} = chart;
     const point = chart.getDatasetMeta(0).data[0];
 
-    await jasmine.triggerMouseEvent(chart, 'mousemove', point);
+    await triggerMouseEvent(chart, 'mousemove', point);
 
     expect(tooltip.title).toEqual(['Label 1']);
     expect(tooltip.body).toEqual([{
@@ -1837,7 +1837,7 @@ describe('Chart.controllers.bar', function() {
 
     chart.options.plugins.tooltip = {mode: 'dataset'};
     chart.update();
-    await jasmine.triggerMouseEvent(chart, 'mousemove', point);
+    await triggerMouseEvent(chart, 'mousemove', point);
 
     expect(tooltip.title).toEqual(['Dataset 1']);
     expect(tooltip.body).toEqual([{

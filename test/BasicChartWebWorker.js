@@ -5,8 +5,7 @@
 // Receives messages with data of type: { type: 'initialize', canvas: OffscreenCanvas }
 // Sends messages with data of types: { type: 'success' } | { type: 'error', errorMessage: string }
 
-// eslint-disable-next-line no-undef
-importScripts('../src/chart.umd.min.js');
+import Chart from '../src/index.umd.ts';
 
 onmessage = function(event) {
   try {

@@ -36,3 +36,6 @@ docs/.vuepress/dist
 
 # Eslint
 .eslintcache
+
+# Vitest failure screenshots
+/.vitest

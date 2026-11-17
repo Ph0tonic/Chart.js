@@ -1,5 +1,5 @@
 describe('Chart.DatasetController', function() {
-  describe('auto', jasmine.fixture.specs('core.datasetController'));
+  describe('auto', specsFromFixtures('core.datasetController'));
 
   it('should listen for dataset data insertions or removals', function() {
     var data = [0, 1, 2, 3, 4, 5];
@@ -22,7 +22,7 @@ describe('Chart.DatasetController', function() {
     ];
 
     methods.forEach(function(method) {
-      spyOn(controller, method);
+      vi.spyOn(controller, method).mockImplementation(() => {});
     });
 
     data.push(6, 7, 8);
@@ -36,7 +36,7 @@ describe('Chart.DatasetController', function() {
     data.unshift(16, 17);
 
     [2, 1, 3, 1, 2].forEach(function(expected, index) {
-      expect(controller[methods[index]].calls.count()).toBe(expected);
+      expect(controller[methods[index]].mock.calls.length).toBe(expected);
     });
   });
 
@@ -949,7 +949,7 @@ describe('Chart.DatasetController', function() {
     });
 
     var meta = chart.getDatasetMeta(0);
-    expect(meta._parsed[0]._stacks).toEqual(jasmine.objectContaining({y: {0: 10, 1: 20, _top: 1, _bottom: null, _visualValues: {0: 10, 1: 20}}}));
+    expect(meta._parsed[0]._stacks).toEqual(expect.objectContaining({y: {0: 10, 1: 20, _top: 1, _bottom: null, _visualValues: {0: 10, 1: 20}}}));
   });
 
   describe('resolveDataElementOptions', function() {
@@ -965,14 +965,14 @@ describe('Chart.DatasetController', function() {
 
       const controller = chart.getDatasetMeta(0).controller;
 
-      expect(controller.enableOptionSharing).toBeTrue();
+      expect(controller.enableOptionSharing).toBe(true);
 
       const opts0 = controller.resolveDataElementOptions(0);
       const opts1 = controller.resolveDataElementOptions(1);
 
-      expect(opts0 === opts1).toBeTrue();
-      expect(opts0.$shared).toBeTrue();
-      expect(Object.isFrozen(opts0)).toBeTrue();
+      expect(opts0 === opts1).toBe(true);
+      expect(opts0.$shared).toBe(true);
+      expect(Object.isFrozen(opts0)).toBe(true);
     });
 
     it('should not cache options when option sharing is disabled', function() {
@@ -987,14 +987,14 @@ describe('Chart.DatasetController', function() {
 
       const controller = chart.getDatasetMeta(0).controller;
 
-      expect(controller.enableOptionSharing).toBeFalse();
+      expect(controller.enableOptionSharing).toBe(false);
 
       const opts0 = controller.resolveDataElementOptions(0);
       const opts1 = controller.resolveDataElementOptions(1);
 
-      expect(opts0 === opts1).toBeFalse();
-      expect(opts0.$shared).not.toBeTrue();
-      expect(Object.isFrozen(opts0)).toBeFalse();
+      expect(opts0 === opts1).toBe(false);
+      expect(opts0.$shared).not.toBe(true);
+      expect(Object.isFrozen(opts0)).toBe(false);
     });
 
     it('should not cache options when functions are used', function() {
@@ -1013,9 +1013,9 @@ describe('Chart.DatasetController', function() {
       const opts0 = controller.resolveDataElementOptions(0);
       const opts1 = controller.resolveDataElementOptions(1);
 
-      expect(opts0 === opts1).toBeFalse();
-      expect(opts0.$shared).not.toBeTrue();
-      expect(Object.isFrozen(opts0)).toBeFalse();
+      expect(opts0 === opts1).toBe(false);
+      expect(opts0.$shared).not.toBe(true);
+      expect(Object.isFrozen(opts0)).toBe(false);
     });
 
     it('should support nested scriptable options', function() {
@@ -1069,10 +1069,10 @@ describe('Chart.DatasetController', function() {
     function animationsExpectations(anims, props) {
       for (const [prop, opts] of Object.entries(props)) {
         const anim = anims._properties.get(prop);
-        expect(anim).withContext(prop).toBeInstanceOf(Object);
+        expect(anim, prop).toBeInstanceOf(Object);
         if (anim) {
           for (const [name, value] of Object.entries(opts)) {
-            expect(anim[name]).withContext('"' + name + '" of ' + JSON.stringify(anim)).toEqual(value);
+            expect(anim[name], '"' + name + '" of ' + JSON.stringify(anim)).toEqual(value);
           }
         }
       }
@@ -1193,14 +1193,14 @@ describe('Chart.DatasetController', function() {
       });
       let meta = chart.getDatasetMeta(0);
 
-      expect(meta.controller.getContext(undefined, true, 'test')).toEqual(jasmine.objectContaining({
+      expect(meta.controller.getContext(undefined, true, 'test')).toEqual(expect.objectContaining({
         active: true,
         datasetIndex: 0,
         dataset: chart.data.datasets[0],
         index: 0,
         mode: 'test'
       }));
-      expect(meta.controller.getContext(1, false, 'datatest')).toEqual(jasmine.objectContaining({
+      expect(meta.controller.getContext(1, false, 'datatest')).toEqual(expect.objectContaining({
         active: false,
         datasetIndex: 0,
         dataset: chart.data.datasets[0],
@@ -1215,7 +1215,7 @@ describe('Chart.DatasetController', function() {
       chart.data.datasets[0].data[1].y = 5;
       chart.update();
 
-      expect(meta.controller.getContext(1, false, 'datatest')).toEqual(jasmine.objectContaining({
+      expect(meta.controller.getContext(1, false, 'datatest')).toEqual(expect.objectContaining({
         active: false,
         datasetIndex: 0,
         dataset: chart.data.datasets[0],
@@ -1234,14 +1234,14 @@ describe('Chart.DatasetController', function() {
       // meta is re-created when dataset is replaced
       meta = chart.getDatasetMeta(0);
 
-      expect(meta.controller.getContext(undefined, false, 'test2')).toEqual(jasmine.objectContaining({
+      expect(meta.controller.getContext(undefined, false, 'test2')).toEqual(expect.objectContaining({
         active: false,
         datasetIndex: 0,
         dataset: chart.data.datasets[0],
         index: 0,
         mode: 'test2'
       }));
-      expect(meta.controller.getContext(1, true, 'datatest2')).toEqual(jasmine.objectContaining({
+      expect(meta.controller.getContext(1, true, 'datatest2')).toEqual(expect.objectContaining({
         active: true,
         datasetIndex: 0,
         dataset: chart.data.datasets[0],
@@ -1255,7 +1255,7 @@ describe('Chart.DatasetController', function() {
 
       chart.data.datasets[0].data.unshift({x: -1, y: -1});
       chart.update();
-      expect(meta.controller.getContext(0, true, 'unshift')).toEqual(jasmine.objectContaining({
+      expect(meta.controller.getContext(0, true, 'unshift')).toEqual(expect.objectContaining({
         active: true,
         datasetIndex: 0,
         dataset: chart.data.datasets[0],
@@ -1266,7 +1266,7 @@ describe('Chart.DatasetController', function() {
         raw: {x: -1, y: -1},
         mode: 'unshift'
       }));
-      expect(meta.controller.getContext(2, true, 'unshift2')).toEqual(jasmine.objectContaining({
+      expect(meta.controller.getContext(2, true, 'unshift2')).toEqual(expect.objectContaining({
         active: true,
         datasetIndex: 0,
         dataset: chart.data.datasets[0],
@@ -1281,7 +1281,7 @@ describe('Chart.DatasetController', function() {
       chart.data.datasets.unshift({data: [{x: 10, y: 20}]});
       chart.update();
       meta = chart.getDatasetMeta(0);
-      expect(meta.controller.getContext(0, true, 'unshift3')).toEqual(jasmine.objectContaining({
+      expect(meta.controller.getContext(0, true, 'unshift3')).toEqual(expect.objectContaining({
         active: true,
         datasetIndex: 0,
         dataset: chart.data.datasets[0],
@@ -1294,7 +1294,7 @@ describe('Chart.DatasetController', function() {
       }));
 
       meta = chart.getDatasetMeta(1);
-      expect(meta.controller.getContext(2, true, 'unshift4')).toEqual(jasmine.objectContaining({
+      expect(meta.controller.getContext(2, true, 'unshift4')).toEqual(expect.objectContaining({
         active: true,
         datasetIndex: 1,
         dataset: chart.data.datasets[1],

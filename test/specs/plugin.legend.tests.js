@@ -1,6 +1,6 @@
 // Test the rectangle element
 describe('Legend block tests', function() {
-  describe('auto', jasmine.fixture.specs('plugin.legend'));
+  describe('auto', specsFromFixtures('plugin.legend'));
 
   it('should have the correct default config', function() {
     expect(Chart.defaults.plugins.legend).toEqual({
@@ -12,19 +12,19 @@ describe('Legend block tests', function() {
       weight: 1000,
 
       // a callback that will handle
-      onClick: jasmine.any(Function),
+      onClick: expect.any(Function),
       onHover: null,
       onLeave: null,
 
       labels: {
-        color: jasmine.any(Function),
+        color: expect.any(Function),
         boxWidth: 40,
         padding: 10,
-        generateLabels: jasmine.any(Function)
+        generateLabels: expect.any(Function)
       },
 
       title: {
-        color: jasmine.any(Function),
+        color: expect.any(Function),
         display: false,
         position: 'center',
         text: '',
@@ -1096,13 +1096,13 @@ describe('Legend block tests', function() {
         y: hb.top + (hb.height / 2)
       };
 
-      await jasmine.triggerMouseEvent(chart, 'click', el);
+      await triggerMouseEvent(chart, 'click', el);
       expect(clickItem).toBe(chart.legend.legendItems[0]);
 
-      await jasmine.triggerMouseEvent(chart, 'mousemove', el);
+      await triggerMouseEvent(chart, 'mousemove', el);
       expect(hoverItem).toBe(chart.legend.legendItems[0]);
 
-      await jasmine.triggerMouseEvent(chart, 'mousemove', chart.getDatasetMeta(0).data[0]);
+      await triggerMouseEvent(chart, 'mousemove', chart.getDatasetMeta(0).data[0]);
       expect(leaveItem).toBe(chart.legend.legendItems[0]);
     });
 
@@ -1138,10 +1138,10 @@ describe('Legend block tests', function() {
         y: hb.top + (hb.height / 2)
       };
 
-      await jasmine.triggerMouseEvent(chart, 'mousemove', el);
+      await triggerMouseEvent(chart, 'mousemove', el);
       expect(hoverItem).toBe(chart.legend.legendItems[0]);
 
-      await jasmine.triggerMouseEvent(chart, 'mouseout');
+      await triggerMouseEvent(chart, 'mouseout');
       expect(leaveItem).toBe(chart.legend.legendItems[0]);
     });
 
@@ -1178,7 +1178,7 @@ describe('Legend block tests', function() {
         y: hb.top + (hb.height / 2)
       };
 
-      await jasmine.triggerMouseEvent(chart, 'click', el);
+      await triggerMouseEvent(chart, 'click', el);
       expect(clickItem).toBe(chart.legend.legendItems[0]);
     });
   });

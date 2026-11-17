@@ -1,5 +1,5 @@
 describe('Chart.controllers.scatter', function() {
-  describe('auto', jasmine.fixture.specs('controller.scatter'));
+  describe('auto', specsFromFixtures('controller.scatter'));
 
   it('should be registered as dataset controller', function() {
     expect(typeof Chart.controllers.scatter).toBe('function');
@@ -36,7 +36,7 @@ describe('Chart.controllers.scatter', function() {
     });
     var point = chart.getDatasetMeta(0).data[1];
 
-    await jasmine.triggerMouseEvent(chart, 'mousemove', point);
+    await triggerMouseEvent(chart, 'mousemove', point);
     expect(chart.tooltip.body.length).toEqual(1);
   });
 
@@ -178,7 +178,7 @@ describe('Chart.controllers.scatter', function() {
     const {tooltip} = chart;
     const point = chart.getDatasetMeta(0).data[0];
 
-    await jasmine.triggerMouseEvent(chart, 'mousemove', point);
+    await triggerMouseEvent(chart, 'mousemove', point);
 
     expect(tooltip.title).toEqual(['Label 1']);
     expect(tooltip.body).toEqual([{
@@ -189,7 +189,7 @@ describe('Chart.controllers.scatter', function() {
 
     chart.options.plugins.tooltip = {mode: 'dataset'};
     chart.update();
-    await jasmine.triggerMouseEvent(chart, 'mousemove', point);
+    await triggerMouseEvent(chart, 'mousemove', point);
 
     expect(tooltip.title).toEqual(['Dataset 1']);
     expect(tooltip.body).toEqual([{

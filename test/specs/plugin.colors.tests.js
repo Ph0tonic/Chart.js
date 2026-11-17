@@ -1,5 +1,5 @@
 describe('Plugin.colors', () => {
-  describe('auto', jasmine.fixture.specs('plugin.colors'));
+  describe('auto', specsFromFixtures('plugin.colors'));
 
   describe('Plugin.colors.chartDefaults', () => {
     beforeAll(() => {

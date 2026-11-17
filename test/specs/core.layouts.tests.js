@@ -3,7 +3,7 @@ function getLabels(scale) {
 }
 
 describe('Chart.layouts', function() {
-  describe('auto', jasmine.fixture.specs('core.layouts'));
+  describe('auto', specsFromFixtures('core.layouts'));
 
   it('should be exposed through Chart.layouts', function() {
     expect(Chart.layouts).toBeDefined();

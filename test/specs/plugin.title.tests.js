@@ -3,7 +3,7 @@
 var Title = Chart.registry.getPlugin('title')._element;
 
 describe('Plugin.title', function() {
-  describe('auto', jasmine.fixture.specs('plugin.title'));
+  describe('auto', specsFromFixtures('plugin.title'));
 
   it('Should have the correct default config', function() {
     expect(Chart.defaults.plugins.title).toEqual({

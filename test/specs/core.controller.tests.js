@@ -232,13 +232,13 @@ describe('Chart', function() {
 
     it('should initialize the data object', function() {
       const chart = acquireChart({type: 'bar'});
-      expect(chart.data).toEqual(jasmine.objectContaining({labels: [], datasets: []}));
+      expect(chart.data).toEqual(expect.objectContaining({labels: [], datasets: []}));
       chart.data = {};
-      expect(chart.data).toEqual(jasmine.objectContaining({labels: [], datasets: []}));
+      expect(chart.data).toEqual(expect.objectContaining({labels: [], datasets: []}));
       chart.data = null;
-      expect(chart.data).toEqual(jasmine.objectContaining({labels: [], datasets: []}));
+      expect(chart.data).toEqual(expect.objectContaining({labels: [], datasets: []}));
       chart.data = undefined;
-      expect(chart.data).toEqual(jasmine.objectContaining({labels: [], datasets: []}));
+      expect(chart.data).toEqual(expect.objectContaining({labels: [], datasets: []}));
     });
 
     describe('should disable hover', function() {
@@ -249,7 +249,7 @@ describe('Chart', function() {
             hover: false
           }
         });
-        expect(chart.options.hover).toBeFalse();
+        expect(chart.options.hover).toBe(false);
       });
 
       it('when options.interaction=false and options.hover is not defined', function() {
@@ -259,7 +259,7 @@ describe('Chart', function() {
             interaction: false
           }
         });
-        expect(chart.options.hover).toBeFalse();
+        expect(chart.options.hover).toBe(false);
       });
 
       it('when options.interaction=false and options.hover is defined', function() {
@@ -270,7 +270,7 @@ describe('Chart', function() {
             hover: {mode: 'nearest'}
           }
         });
-        expect(chart.options.hover).toBeFalse();
+        expect(chart.options.hover).toBe(false);
       });
     });
 
@@ -287,7 +287,7 @@ describe('Chart', function() {
 
       var point = chart.getDatasetMeta(0).data[1];
 
-      await jasmine.triggerMouseEvent(chart, 'mousemove', point);
+      await triggerMouseEvent(chart, 'mousemove', point);
       expect(chart.getActiveElements()).toEqual([{datasetIndex: 0, index: 1, element: point}]);
     });
 
@@ -308,13 +308,13 @@ describe('Chart', function() {
       var point1 = chart.getDatasetMeta(0).data[1];
       var point2 = chart.getDatasetMeta(0).data[2];
 
-      await jasmine.triggerMouseEvent(chart, 'click', point1);
+      await triggerMouseEvent(chart, 'click', point1);
       expect(chart.getActiveElements()).toEqual([{datasetIndex: 0, index: 1, element: point1}]);
 
       chart.options.events = ['mousemove'];
       chart.update();
 
-      await jasmine.triggerMouseEvent(chart, 'mousemove', point2);
+      await triggerMouseEvent(chart, 'mousemove', point2);
       expect(chart.getActiveElements()).toEqual([{datasetIndex: 0, index: 2, element: point2}]);
     });
 
@@ -338,7 +338,7 @@ describe('Chart', function() {
 
       var point = chart.getDatasetMeta(0).data[0];
 
-      await jasmine.triggerMouseEvent(chart, 'mousemove', {x: 1, y: point.y});
+      await triggerMouseEvent(chart, 'mousemove', {x: 1, y: point.y});
       expect(chart.getActiveElements()).toEqual([{datasetIndex: 0, index: 0, element: point}]);
     });
 
@@ -358,7 +358,7 @@ describe('Chart', function() {
 
       var point = chart.getDatasetMeta(0).data[1];
 
-      await jasmine.triggerMouseEvent(chart, 'mousemove', point);
+      await triggerMouseEvent(chart, 'mousemove', point);
       expect(chart.getActiveElements()).toEqual([]);
     });
 
@@ -385,13 +385,13 @@ describe('Chart', function() {
 
       var point = chart.getDatasetMeta(0).data[0];
 
-      await jasmine.triggerMouseEvent(chart, 'mousemove', {x: point.x, y: point.y});
+      await triggerMouseEvent(chart, 'mousemove', {x: point.x, y: point.y});
       expect(chart.getActiveElements()).toEqual([{datasetIndex: 0, index: 0, element: point}]);
 
-      await jasmine.triggerMouseEvent(chart, 'mousemove', {x: 1, y: 1});
+      await triggerMouseEvent(chart, 'mousemove', {x: 1, y: 1});
       expect(chart.getActiveElements()).toEqual([{datasetIndex: 0, index: 0, element: point}]);
 
-      await jasmine.triggerMouseEvent(chart, 'mouseout', {x: 1, y: 1});
+      await triggerMouseEvent(chart, 'mouseout', {x: 1, y: 1});
       expect(chart.tooltip.getActiveElements()).toEqual([]);
     });
   });
@@ -457,7 +457,7 @@ describe('Chart', function() {
       expect(chart.scales.foo.type).toBe('logarithmic');
       expect(chart.scales.foo.options).toEqual(chart.options.scales.foo);
       expect(chart.scales.foo.options).toEqual(
-        jasmine.objectContaining({
+        expect.objectContaining({
           _jasmineCheckA: 'a0',
           _jasmineCheckB: 'b1',
           _jasmineCheckC: 'c2',
@@ -487,7 +487,7 @@ describe('Chart', function() {
       expect(chart.scales.x.type).toBe('logarithmic');
       expect(chart.scales.x.options).toEqual(chart.options.scales.x);
       expect(chart.scales.x.options).toEqual(
-        jasmine.objectContaining({
+        expect.objectContaining({
           _jasmineCheckA: 'a0',
           _jasmineCheckB: 'b1',
           _jasmineCheckC: 'c2',
@@ -497,7 +497,7 @@ describe('Chart', function() {
       expect(chart.scales.y.type).toBe('time');
       expect(chart.scales.y.options).toEqual(chart.options.scales.y);
       expect(chart.scales.y.options).toEqual(
-        jasmine.objectContaining({
+        expect.objectContaining({
           _jasmineCheckA: 'a0',
           _jasmineCheckB: 'b0',
           _jasmineCheckC: 'c2',
@@ -649,448 +649,215 @@ describe('Chart', function() {
       });
 
       expect(count).toEqual(1);
-      expect(correctThis).toBeTrue();
+      expect(correctThis).toBe(true);
       expect(size).toEqual({width: 300, height: 350});
     });
 
 
-    it('should resize the canvas when parent width changes', function(done) {
-      var chart = acquireChart({
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      }, {
-        canvas: {
-          style: ''
-        },
-        wrapper: {
-          style: 'width: 300px; height: 350px; position: relative'
-        }
-      });
-
-      expect(chart).toBeChartOfSize({
-        dw: 300, dh: 350,
-        rw: 300, rh: 350,
-      });
-
-      var wrapper = chart.canvas.parentNode;
-      waitForResize(chart, function() {
-        expect(chart).toBeChartOfSize({
-          dw: 455, dh: 350,
-          rw: 455, rh: 350,
+    it('should resize the canvas when parent width changes', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        }, {
+          canvas: {
+            style: ''
+          },
+          wrapper: {
+            style: 'width: 300px; height: 350px; position: relative'
+          }
         });
 
-        waitForResize(chart, function() {
-          expect(chart).toBeChartOfSize({
-            dw: 150, dh: 350,
-            rw: 150, rh: 350,
-          });
-
-          done();
-        });
-        wrapper.style.width = '150px';
-      });
-      wrapper.style.width = '455px';
-    });
-
-    it('should restore the original size when parent became invisible', function(done) {
-      var chart = acquireChart({
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      }, {
-        canvas: {
-          style: ''
-        },
-        wrapper: {
-          style: 'width: 300px; height: 350px; position: relative'
-        }
-      });
-
-      waitForResize(chart, function() {
         expect(chart).toBeChartOfSize({
           dw: 300, dh: 350,
           rw: 300, rh: 350,
         });
 
-        var original = chart.resize;
-        chart.resize = function() {
-          fail('resize should not have been called');
-        };
-
         var wrapper = chart.canvas.parentNode;
-        wrapper.style.display = 'none';
+        waitForResize(chart, function() {
+          expect(chart).toBeChartOfSize({
+            dw: 455, dh: 350,
+            rw: 455, rh: 350,
+          });
 
-        setTimeout(function() {
-          expect(wrapper.clientWidth).toEqual(0);
-          expect(wrapper.clientHeight).toEqual(0);
+          waitForResize(chart, function() {
+            expect(chart).toBeChartOfSize({
+              dw: 150, dh: 350,
+              rw: 150, rh: 350,
+            });
 
+            done();
+          });
+          wrapper.style.width = '150px';
+        });
+        wrapper.style.width = '455px';
+      });
+    });
+
+    it('should restore the original size when parent became invisible', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        }, {
+          canvas: {
+            style: ''
+          },
+          wrapper: {
+            style: 'width: 300px; height: 350px; position: relative'
+          }
+        });
+
+        waitForResize(chart, function() {
           expect(chart).toBeChartOfSize({
             dw: 300, dh: 350,
             rw: 300, rh: 350,
           });
 
-          chart.resize = original;
+          var original = chart.resize;
+          chart.resize = function() {
+            expect.unreachable('resize should not have been called');
+          };
 
-          waitForResize(chart, function() {
+          var wrapper = chart.canvas.parentNode;
+          wrapper.style.display = 'none';
+
+          setTimeout(function() {
+            expect(wrapper.clientWidth).toEqual(0);
+            expect(wrapper.clientHeight).toEqual(0);
+
             expect(chart).toBeChartOfSize({
               dw: 300, dh: 350,
               rw: 300, rh: 350,
             });
 
+            chart.resize = original;
+
+            waitForResize(chart, function() {
+              expect(chart).toBeChartOfSize({
+                dw: 300, dh: 350,
+                rw: 300, rh: 350,
+              });
+
+              done();
+            });
+            wrapper.style.display = 'block';
+          }, 200);
+        });
+      });
+    });
+
+    it('should resize the canvas when parent is RTL and width changes', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        }, {
+          canvas: {
+            style: ''
+          },
+          wrapper: {
+            style: 'width: 300px; height: 350px; position: relative; direction: rtl'
+          }
+        });
+
+        expect(chart).toBeChartOfSize({
+          dw: 300, dh: 350,
+          rw: 300, rh: 350,
+        });
+
+        var wrapper = chart.canvas.parentNode;
+        waitForResize(chart, function() {
+          expect(chart).toBeChartOfSize({
+            dw: 455, dh: 350,
+            rw: 455, rh: 350,
+          });
+
+          waitForResize(chart, function() {
+            expect(chart).toBeChartOfSize({
+              dw: 150, dh: 350,
+              rw: 150, rh: 350,
+            });
+
             done();
           });
-          wrapper.style.display = 'block';
-        }, 200);
+          wrapper.style.width = '150px';
+        });
+        wrapper.style.width = '455px';
       });
     });
 
-    it('should resize the canvas when parent is RTL and width changes', function(done) {
-      var chart = acquireChart({
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      }, {
-        canvas: {
-          style: ''
-        },
-        wrapper: {
-          style: 'width: 300px; height: 350px; position: relative; direction: rtl'
-        }
-      });
-
-      expect(chart).toBeChartOfSize({
-        dw: 300, dh: 350,
-        rw: 300, rh: 350,
-      });
-
-      var wrapper = chart.canvas.parentNode;
-      waitForResize(chart, function() {
-        expect(chart).toBeChartOfSize({
-          dw: 455, dh: 350,
-          rw: 455, rh: 350,
+    it('should resize the canvas when parent height changes', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        }, {
+          canvas: {
+            style: ''
+          },
+          wrapper: {
+            style: 'width: 300px; height: 350px; position: relative'
+          }
         });
 
+        expect(chart).toBeChartOfSize({
+          dw: 300, dh: 350,
+          rw: 300, rh: 350,
+        });
+
+        var wrapper = chart.canvas.parentNode;
         waitForResize(chart, function() {
           expect(chart).toBeChartOfSize({
-            dw: 150, dh: 350,
-            rw: 150, rh: 350,
+            dw: 300, dh: 455,
+            rw: 300, rh: 455,
           });
 
-          done();
-        });
-        wrapper.style.width = '150px';
-      });
-      wrapper.style.width = '455px';
-    });
+          waitForResize(chart, function() {
+            expect(chart).toBeChartOfSize({
+              dw: 300, dh: 150,
+              rw: 300, rh: 150,
+            });
 
-    it('should resize the canvas when parent height changes', function(done) {
-      var chart = acquireChart({
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      }, {
-        canvas: {
-          style: ''
-        },
-        wrapper: {
-          style: 'width: 300px; height: 350px; position: relative'
-        }
-      });
-
-      expect(chart).toBeChartOfSize({
-        dw: 300, dh: 350,
-        rw: 300, rh: 350,
-      });
-
-      var wrapper = chart.canvas.parentNode;
-      waitForResize(chart, function() {
-        expect(chart).toBeChartOfSize({
-          dw: 300, dh: 455,
-          rw: 300, rh: 455,
-        });
-
-        waitForResize(chart, function() {
-          expect(chart).toBeChartOfSize({
-            dw: 300, dh: 150,
-            rw: 300, rh: 150,
+            done();
           });
-
-          done();
+          wrapper.style.height = '150px';
         });
-        wrapper.style.height = '150px';
+        wrapper.style.height = '455px';
       });
-      wrapper.style.height = '455px';
     });
 
-    it('should not include parent padding when resizing the canvas', function(done) {
-      var chart = acquireChart({
-        type: 'line',
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      }, {
-        canvas: {
-          style: ''
-        },
-        wrapper: {
-          style: 'padding: 50px; width: 320px; height: 350px; position: relative'
-        }
-      });
-
-      expect(chart).toBeChartOfSize({
-        dw: 320, dh: 350,
-        rw: 320, rh: 350,
-      });
-
-      var wrapper = chart.canvas.parentNode;
-      waitForResize(chart, function() {
-        expect(chart).toBeChartOfSize({
-          dw: 455, dh: 355,
-          rw: 455, rh: 355,
+    it('should not include parent padding when resizing the canvas', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
+          type: 'line',
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        }, {
+          canvas: {
+            style: ''
+          },
+          wrapper: {
+            style: 'padding: 50px; width: 320px; height: 350px; position: relative'
+          }
         });
 
-        done();
-      });
-      wrapper.style.height = '355px';
-      wrapper.style.width = '455px';
-    });
-
-    it('should resize the canvas when the canvas display style changes from "none" to "block"', function(done) {
-      var chart = acquireChart({
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      }, {
-        canvas: {
-          style: 'display: none;'
-        },
-        wrapper: {
-          style: 'width: 320px; height: 350px'
-        }
-      });
-
-      var canvas = chart.canvas;
-      waitForResize(chart, function() {
         expect(chart).toBeChartOfSize({
           dw: 320, dh: 350,
           rw: 320, rh: 350,
         });
 
-        done();
-      });
-      canvas.style.display = 'block';
-    });
-
-    it('should resize the canvas when the wrapper display style changes from "none" to "block"', function(done) {
-      var chart = acquireChart({
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      }, {
-        canvas: {
-          style: ''
-        },
-        wrapper: {
-          style: 'display: none; width: 460px; height: 380px'
-        }
-      });
-
-      var wrapper = chart.canvas.parentNode;
-      waitForResize(chart, function() {
-        expect(chart).toBeChartOfSize({
-          dw: 460, dh: 380,
-          rw: 460, rh: 380,
-        });
-
-        done();
-      });
-      wrapper.style.display = 'block';
-    });
-
-    it('should resize the canvas when the wrapper has display style changes from "none" to "block"', function(done) {
-      // https://github.com/chartjs/Chart.js/issues/4659
-      var chart = acquireChart({
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      }, {
-        canvas: {
-          style: ''
-        },
-        wrapper: {
-          style: 'display: none; max-width: 600px; max-height: 400px;'
-        }
-      });
-
-      var wrapper = chart.canvas.parentNode;
-      waitForResize(chart, function() {
-        expect(chart).toBeChartOfSize({
-          dw: 600, dh: 300,
-          rw: 600, rh: 300,
-        });
-
-        done();
-      });
-      wrapper.style.display = 'block';
-    });
-
-    // https://github.com/chartjs/Chart.js/issues/5485
-    it('should resize the canvas when the devicePixelRatio changes', function(done) {
-      var chart = acquireChart({
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          devicePixelRatio: 1
-        }
-      }, {
-        canvas: {
-          style: ''
-        },
-        wrapper: {
-          style: 'width: 400px; height: 200px; position: relative'
-        }
-      });
-
-      expect(chart).toBeChartOfSize({
-        dw: 400, dh: 200,
-        rw: 400, rh: 200,
-      });
-
-      waitForResize(chart, function() {
-        expect(chart).toBeChartOfSize({
-          dw: 400, dh: 200,
-          rw: 800, rh: 400,
-        });
-
-        done();
-      });
-      chart.options.devicePixelRatio = 2;
-      chart.resize();
-    });
-
-    // https://github.com/chartjs/Chart.js/issues/3790
-    it('should resize the canvas if attached to the DOM after construction', function(done) {
-      var canvas = document.createElement('canvas');
-      var wrapper = document.createElement('div');
-      var body = window.document.body;
-      var chart = new Chart(canvas, {
-        type: 'line',
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      });
-
-      expect(chart).toBeChartOfSize({
-        dw: 0, dh: 0,
-        rw: 0, rh: 0,
-      });
-      expect(chart.chartArea).toBeUndefined();
-
-      waitForResize(chart, function() {
-        expect(chart).toBeChartOfSize({
-          dw: 455, dh: 355,
-          rw: 455, rh: 355,
-        });
-
-        expect(chart.chartArea).not.toBeUndefined();
-
-        body.removeChild(wrapper);
-        chart.destroy();
-        done();
-      });
-
-      wrapper.style.cssText = 'width: 455px; height: 355px';
-      wrapper.appendChild(canvas);
-      body.appendChild(wrapper);
-    });
-
-    it('should resize the canvas when attached to a different parent', function(done) {
-      var canvas = document.createElement('canvas');
-      var wrapper = document.createElement('div');
-      var body = window.document.body;
-      var chart = new Chart(canvas, {
-        type: 'line',
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      });
-
-      expect(chart).toBeChartOfSize({
-        dw: 0, dh: 0,
-        rw: 0, rh: 0,
-      });
-
-      waitForResize(chart, function() {
-        expect(chart).toBeChartOfSize({
-          dw: 455, dh: 355,
-          rw: 455, rh: 355,
-        });
-
-        var target = document.createElement('div');
-
-        waitForResize(chart, function() {
-          expect(chart).toBeChartOfSize({
-            dw: 640, dh: 480,
-            rw: 640, rh: 480,
-          });
-
-          body.removeChild(wrapper);
-          body.removeChild(target);
-          chart.destroy();
-          done();
-        });
-
-        target.style.cssText = 'width: 640px; height: 480px';
-        target.appendChild(canvas);
-        body.appendChild(target);
-      });
-
-      wrapper.style.cssText = 'width: 455px; height: 355px';
-      wrapper.appendChild(canvas);
-      body.appendChild(wrapper);
-    });
-
-    // https://github.com/chartjs/Chart.js/issues/3521
-    it('should resize the canvas after the wrapper has been re-attached to the DOM', function(done) {
-      var chart = acquireChart({
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      }, {
-        canvas: {
-          style: ''
-        },
-        wrapper: {
-          style: 'width: 320px; height: 350px'
-        }
-      });
-
-      expect(chart).toBeChartOfSize({
-        dw: 320, dh: 350,
-        rw: 320, rh: 350,
-      });
-
-      var wrapper = chart.canvas.parentNode;
-      var parent = wrapper.parentNode;
-
-      waitForResize(chart, function() {
-        expect(chart).toBeChartOfSize({
-          dw: 320, dh: 355,
-          rw: 320, rh: 355,
-        });
-
+        var wrapper = chart.canvas.parentNode;
         waitForResize(chart, function() {
           expect(chart).toBeChartOfSize({
             dw: 455, dh: 355,
@@ -1099,298 +866,569 @@ describe('Chart', function() {
 
           done();
         });
-
-        parent.removeChild(wrapper);
-        wrapper.style.width = '455px';
-        parent.appendChild(wrapper);
-      });
-
-      parent.removeChild(wrapper);
-      setTimeout(() => {
-        parent.appendChild(wrapper);
         wrapper.style.height = '355px';
-      }, 0);
+        wrapper.style.width = '455px';
+      });
     });
 
-    // https://github.com/chartjs/Chart.js/issues/9875
-    it('should detect detach/attach in series', function(done) {
-      var chart = acquireChart({
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      }, {
-        canvas: {
-          style: ''
-        },
-        wrapper: {
-          style: 'width: 320px; height: 350px'
-        }
+    it('should resize the canvas when the canvas display style changes from "none" to "block"', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        }, {
+          canvas: {
+            style: 'display: none;'
+          },
+          wrapper: {
+            style: 'width: 320px; height: 350px'
+          }
+        });
+
+        var canvas = chart.canvas;
+        waitForResize(chart, function() {
+          expect(chart).toBeChartOfSize({
+            dw: 320, dh: 350,
+            rw: 320, rh: 350,
+          });
+
+          done();
+        });
+        canvas.style.display = 'block';
       });
+    });
 
-      var wrapper = chart.canvas.parentNode;
-      var parent = wrapper.parentNode;
+    it('should resize the canvas when the wrapper display style changes from "none" to "block"', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        }, {
+          canvas: {
+            style: ''
+          },
+          wrapper: {
+            style: 'display: none; width: 460px; height: 380px'
+          }
+        });
 
-      waitForResize(chart, function() {
+        var wrapper = chart.canvas.parentNode;
+        waitForResize(chart, function() {
+          expect(chart).toBeChartOfSize({
+            dw: 460, dh: 380,
+            rw: 460, rh: 380,
+          });
+
+          done();
+        });
+        wrapper.style.display = 'block';
+      });
+    });
+
+    it('should resize the canvas when the wrapper has display style changes from "none" to "block"', function() {
+      return new Promise(done => {
+        // https://github.com/chartjs/Chart.js/issues/4659
+        var chart = acquireChart({
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        }, {
+          canvas: {
+            style: ''
+          },
+          wrapper: {
+            style: 'display: none; max-width: 600px; max-height: 400px;'
+          }
+        });
+
+        var wrapper = chart.canvas.parentNode;
+        waitForResize(chart, function() {
+          expect(chart).toBeChartOfSize({
+            dw: 600, dh: 300,
+            rw: 600, rh: 300,
+          });
+
+          done();
+        });
+        wrapper.style.display = 'block';
+      });
+    });
+
+    // https://github.com/chartjs/Chart.js/issues/5485
+    it('should resize the canvas when the devicePixelRatio changes', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            devicePixelRatio: 1
+          }
+        }, {
+          canvas: {
+            style: ''
+          },
+          wrapper: {
+            style: 'width: 400px; height: 200px; position: relative'
+          }
+        });
+
+        expect(chart).toBeChartOfSize({
+          dw: 400, dh: 200,
+          rw: 400, rh: 200,
+        });
+
+        waitForResize(chart, function() {
+          expect(chart).toBeChartOfSize({
+            dw: 400, dh: 200,
+            rw: 800, rh: 400,
+          });
+
+          done();
+        });
+        chart.options.devicePixelRatio = 2;
+        chart.resize();
+      });
+    });
+
+    // https://github.com/chartjs/Chart.js/issues/3790
+    it('should resize the canvas if attached to the DOM after construction', function() {
+      return new Promise(done => {
+        var canvas = document.createElement('canvas');
+        var wrapper = document.createElement('div');
+        var body = window.document.body;
+        var chart = new Chart(canvas, {
+          type: 'line',
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        });
+
+        expect(chart).toBeChartOfSize({
+          dw: 0, dh: 0,
+          rw: 0, rh: 0,
+        });
+        expect(chart.chartArea).toBeUndefined();
+
+        waitForResize(chart, function() {
+          expect(chart).toBeChartOfSize({
+            dw: 455, dh: 355,
+            rw: 455, rh: 355,
+          });
+
+          expect(chart.chartArea).not.toBeUndefined();
+
+          body.removeChild(wrapper);
+          chart.destroy();
+          done();
+        });
+
+        wrapper.style.cssText = 'width: 455px; height: 355px';
+        wrapper.appendChild(canvas);
+        body.appendChild(wrapper);
+      });
+    });
+
+    it('should resize the canvas when attached to a different parent', function() {
+      return new Promise(done => {
+        var canvas = document.createElement('canvas');
+        var wrapper = document.createElement('div');
+        var body = window.document.body;
+        var chart = new Chart(canvas, {
+          type: 'line',
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        });
+
+        expect(chart).toBeChartOfSize({
+          dw: 0, dh: 0,
+          rw: 0, rh: 0,
+        });
+
+        waitForResize(chart, function() {
+          expect(chart).toBeChartOfSize({
+            dw: 455, dh: 355,
+            rw: 455, rh: 355,
+          });
+
+          var target = document.createElement('div');
+
+          waitForResize(chart, function() {
+            expect(chart).toBeChartOfSize({
+              dw: 640, dh: 480,
+              rw: 640, rh: 480,
+            });
+
+            body.removeChild(wrapper);
+            body.removeChild(target);
+            chart.destroy();
+            done();
+          });
+
+          target.style.cssText = 'width: 640px; height: 480px';
+          target.appendChild(canvas);
+          body.appendChild(target);
+        });
+
+        wrapper.style.cssText = 'width: 455px; height: 355px';
+        wrapper.appendChild(canvas);
+        body.appendChild(wrapper);
+      });
+    });
+
+    // https://github.com/chartjs/Chart.js/issues/3521
+    it('should resize the canvas after the wrapper has been re-attached to the DOM', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        }, {
+          canvas: {
+            style: ''
+          },
+          wrapper: {
+            style: 'width: 320px; height: 350px'
+          }
+        });
+
         expect(chart).toBeChartOfSize({
           dw: 320, dh: 350,
           rw: 320, rh: 350,
         });
 
-        done();
-      });
-
-      parent.removeChild(wrapper);
-      parent.appendChild(wrapper);
-    });
-
-    it('should detect detach/attach/detach in series', function(done) {
-      var chart = acquireChart({
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      }, {
-        canvas: {
-          style: ''
-        },
-        wrapper: {
-          style: 'width: 320px; height: 350px'
-        }
-      });
-
-      var wrapper = chart.canvas.parentNode;
-      var parent = wrapper.parentNode;
-
-      waitForResize(chart, function() {
-        fail();
-      });
-
-      parent.removeChild(wrapper);
-      parent.appendChild(wrapper);
-      parent.removeChild(wrapper);
-
-      setTimeout(function() {
-        expect(chart.attached).toBeFalse();
-        done();
-      }, 100);
-    });
-
-    it('should detect attach/detach in series', function(done) {
-      var chart = acquireChart({
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      }, {
-        canvas: {
-          style: ''
-        },
-        wrapper: {
-          style: 'width: 320px; height: 350px'
-        }
-      });
-
-      var wrapper = chart.canvas.parentNode;
-      var parent = wrapper.parentNode;
-
-      parent.removeChild(wrapper);
-
-      setTimeout(function() {
-        expect(chart.attached).toBeFalse();
+        var wrapper = chart.canvas.parentNode;
+        var parent = wrapper.parentNode;
 
         waitForResize(chart, function() {
-          fail();
+          expect(chart).toBeChartOfSize({
+            dw: 320, dh: 355,
+            rw: 320, rh: 355,
+          });
+
+          waitForResize(chart, function() {
+            expect(chart).toBeChartOfSize({
+              dw: 455, dh: 355,
+              rw: 455, rh: 355,
+            });
+
+            done();
+          });
+
+          parent.removeChild(wrapper);
+          wrapper.style.width = '455px';
+          parent.appendChild(wrapper);
         });
 
+        parent.removeChild(wrapper);
+        setTimeout(() => {
+          parent.appendChild(wrapper);
+          wrapper.style.height = '355px';
+        }, 0);
+      });
+    });
+
+    // https://github.com/chartjs/Chart.js/issues/9875
+    it('should detect detach/attach in series', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        }, {
+          canvas: {
+            style: ''
+          },
+          wrapper: {
+            style: 'width: 320px; height: 350px'
+          }
+        });
+
+        var wrapper = chart.canvas.parentNode;
+        var parent = wrapper.parentNode;
+
+        waitForResize(chart, function() {
+          expect(chart).toBeChartOfSize({
+            dw: 320, dh: 350,
+            rw: 320, rh: 350,
+          });
+
+          done();
+        });
+
+        parent.removeChild(wrapper);
+        parent.appendChild(wrapper);
+      });
+    });
+
+    it('should detect detach/attach/detach in series', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        }, {
+          canvas: {
+            style: ''
+          },
+          wrapper: {
+            style: 'width: 320px; height: 350px'
+          }
+        });
+
+        var wrapper = chart.canvas.parentNode;
+        var parent = wrapper.parentNode;
+
+        waitForResize(chart, function() {
+          expect.unreachable();
+        });
+
+        parent.removeChild(wrapper);
         parent.appendChild(wrapper);
         parent.removeChild(wrapper);
 
         setTimeout(function() {
-          expect(chart.attached).toBeFalse();
-
+          expect(chart.attached).toBe(false);
           done();
         }, 100);
-      }, 100);
+      });
     });
 
-    // https://github.com/chartjs/Chart.js/issues/4737
-    it('should resize the canvas when re-creating the chart', function(done) {
-      var chart = acquireChart({
-        options: {
-          responsive: true
-        }
-      }, {
-        wrapper: {
-          style: 'width: 320px'
-        }
-      });
-
-      var wrapper = chart.canvas.parentNode;
-
-      waitForResize(chart, function() {
-        var canvas = chart.canvas;
-        expect(chart).toBeChartOfSize({
-          dw: 320, dh: 320,
-          rw: 320, rh: 320,
-        });
-
-        chart.destroy();
-        chart = new Chart(canvas, {
-          type: 'line',
+    it('should detect attach/detach in series', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
           options: {
-            responsive: true
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        }, {
+          canvas: {
+            style: ''
+          },
+          wrapper: {
+            style: 'width: 320px; height: 350px'
           }
         });
 
-        waitForResize(chart, function() {
-          expect(chart).toBeChartOfSize({
-            dw: 455, dh: 455,
-            rw: 455, rh: 455,
+        var wrapper = chart.canvas.parentNode;
+        var parent = wrapper.parentNode;
+
+        parent.removeChild(wrapper);
+
+        setTimeout(function() {
+          expect(chart.attached).toBe(false);
+
+          waitForResize(chart, function() {
+            expect.unreachable();
           });
 
-          chart.destroy();
-          window.document.body.removeChild(wrapper);
-          done();
-        });
-        canvas.parentNode.style.width = '455px';
-        canvas.parentNode.style.height = '455px';
+          parent.appendChild(wrapper);
+          parent.removeChild(wrapper);
+
+          setTimeout(function() {
+            expect(chart.attached).toBe(false);
+
+            done();
+          }, 100);
+        }, 100);
       });
     });
 
-    it('should resize the canvas if attached to the DOM after construction with multiple parents', function(done) {
-      var canvas = document.createElement('canvas');
-      var wrapper = document.createElement('div');
-      var wrapper2 = document.createElement('div');
-      var wrapper3 = document.createElement('div');
-      var body = window.document.body;
-
-      var chart = new Chart(canvas, {
-        type: 'line',
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      });
-
-      expect(chart).toBeChartOfSize({
-        dw: 0, dh: 0,
-        rw: 0, rh: 0,
-      });
-      expect(chart.chartArea).toBeUndefined();
-
-      waitForResize(chart, function() {
-        expect(chart).toBeChartOfSize({
-          dw: 455, dh: 355,
-          rw: 455, rh: 355,
+    // https://github.com/chartjs/Chart.js/issues/4737
+    it('should resize the canvas when re-creating the chart', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
+          options: {
+            responsive: true
+          }
+        }, {
+          wrapper: {
+            style: 'width: 320px'
+          }
         });
 
-        expect(chart.chartArea).not.toBeUndefined();
+        var wrapper = chart.canvas.parentNode;
 
-        body.removeChild(wrapper3);
-        chart.destroy();
-        done();
+        waitForResize(chart, function() {
+          var canvas = chart.canvas;
+          expect(chart).toBeChartOfSize({
+            dw: 320, dh: 320,
+            rw: 320, rh: 320,
+          });
+
+          chart.destroy();
+          chart = new Chart(canvas, {
+            type: 'line',
+            options: {
+              responsive: true
+            }
+          });
+
+          waitForResize(chart, function() {
+            expect(chart).toBeChartOfSize({
+              dw: 455, dh: 455,
+              rw: 455, rh: 455,
+            });
+
+            chart.destroy();
+            window.document.body.removeChild(wrapper);
+            done();
+          });
+          canvas.parentNode.style.width = '455px';
+          canvas.parentNode.style.height = '455px';
+        });
       });
+    });
 
-      wrapper3.appendChild(wrapper2);
-      wrapper2.appendChild(wrapper);
-      wrapper.style.cssText = 'width: 455px; height: 355px';
-      wrapper.appendChild(canvas);
-      body.appendChild(wrapper3);
+    it('should resize the canvas if attached to the DOM after construction with multiple parents', function() {
+      return new Promise(done => {
+        var canvas = document.createElement('canvas');
+        var wrapper = document.createElement('div');
+        var wrapper2 = document.createElement('div');
+        var wrapper3 = document.createElement('div');
+        var body = window.document.body;
+
+        var chart = new Chart(canvas, {
+          type: 'line',
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        });
+
+        expect(chart).toBeChartOfSize({
+          dw: 0, dh: 0,
+          rw: 0, rh: 0,
+        });
+        expect(chart.chartArea).toBeUndefined();
+
+        waitForResize(chart, function() {
+          expect(chart).toBeChartOfSize({
+            dw: 455, dh: 355,
+            rw: 455, rh: 355,
+          });
+
+          expect(chart.chartArea).not.toBeUndefined();
+
+          body.removeChild(wrapper3);
+          chart.destroy();
+          done();
+        });
+
+        wrapper3.appendChild(wrapper2);
+        wrapper2.appendChild(wrapper);
+        wrapper.style.cssText = 'width: 455px; height: 355px';
+        wrapper.appendChild(canvas);
+        body.appendChild(wrapper3);
+      });
     });
   });
 
   describe('config.options.responsive: true (maintainAspectRatio: true)', function() {
-    it('should resize the canvas with correct aspect ratio when parent width changes', function(done) {
-      var chart = acquireChart({
-        type: 'line', // AR == 2
-        options: {
-          responsive: true,
-          maintainAspectRatio: true
-        }
-      }, {
-        canvas: {
-          style: ''
-        },
-        wrapper: {
-          style: 'width: 300px; height: 350px; position: relative'
-        }
-      });
-
-      expect(chart).toBeChartOfSize({
-        dw: 300, dh: 150,
-        rw: 300, rh: 150,
-      });
-
-      var wrapper = chart.canvas.parentNode;
-      waitForResize(chart, function() {
-        expect(chart).toBeChartOfSize({
-          dw: 450, dh: 225,
-          rw: 450, rh: 225,
+    it('should resize the canvas with correct aspect ratio when parent width changes', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
+          type: 'line', // AR == 2
+          options: {
+            responsive: true,
+            maintainAspectRatio: true
+          }
+        }, {
+          canvas: {
+            style: ''
+          },
+          wrapper: {
+            style: 'width: 300px; height: 350px; position: relative'
+          }
         });
 
+        expect(chart).toBeChartOfSize({
+          dw: 300, dh: 150,
+          rw: 300, rh: 150,
+        });
+
+        var wrapper = chart.canvas.parentNode;
         waitForResize(chart, function() {
           expect(chart).toBeChartOfSize({
-            dw: 150, dh: 75,
-            rw: 150, rh: 75,
+            dw: 450, dh: 225,
+            rw: 450, rh: 225,
           });
 
-          done();
+          waitForResize(chart, function() {
+            expect(chart).toBeChartOfSize({
+              dw: 150, dh: 75,
+              rw: 150, rh: 75,
+            });
+
+            done();
+          });
+          wrapper.style.width = '150px';
         });
-        wrapper.style.width = '150px';
+        wrapper.style.width = '450px';
       });
-      wrapper.style.width = '450px';
     });
 
-    it('should maintain aspect ratio when parent height changes', function(done) {
-      var chart = acquireChart({
-        options: {
-          responsive: true,
-          maintainAspectRatio: true
-        }
-      }, {
-        canvas: {
-          style: ''
-        },
-        wrapper: {
-          style: 'width: 320px; height: 350px; position: relative'
-        }
-      });
+    it('should maintain aspect ratio when parent height changes', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
+          options: {
+            responsive: true,
+            maintainAspectRatio: true
+          }
+        }, {
+          canvas: {
+            style: ''
+          },
+          wrapper: {
+            style: 'width: 320px; height: 350px; position: relative'
+          }
+        });
 
-      expect(chart).toBeChartOfSize({
-        dw: 320, dh: 160,
-        rw: 320, rh: 160,
-      });
-
-      var wrapper = chart.canvas.parentNode;
-      waitForResize(chart, function() {
         expect(chart).toBeChartOfSize({
           dw: 320, dh: 160,
           rw: 320, rh: 160,
         });
 
+        var wrapper = chart.canvas.parentNode;
         waitForResize(chart, function() {
           expect(chart).toBeChartOfSize({
-            dw: 300, dh: 150,
-            rw: 300, rh: 150,
+            dw: 320, dh: 160,
+            rw: 320, rh: 160,
           });
 
-          done();
+          waitForResize(chart, function() {
+            expect(chart).toBeChartOfSize({
+              dw: 300, dh: 150,
+              rw: 300, rh: 150,
+            });
+
+            done();
+          });
+          wrapper.style.height = '150px';
         });
-        wrapper.style.height = '150px';
+        wrapper.style.height = '455px';
       });
-      wrapper.style.height = '455px';
     });
   });
 
   describe('Retina scale (a.k.a. device pixel ratio)', function() {
-    beforeEach(function() {
-      this.devicePixelRatio = window.devicePixelRatio;
+    beforeEach(function(ctx) {
+      ctx.devicePixelRatio = window.devicePixelRatio;
       window.devicePixelRatio = 3;
     });
 
-    afterEach(function() {
-      window.devicePixelRatio = this.devicePixelRatio;
+    afterEach(function(ctx) {
+      window.devicePixelRatio = ctx.devicePixelRatio;
     });
 
     // see https://github.com/chartjs/Chart.js/issues/3575
@@ -1431,13 +1469,13 @@ describe('Chart', function() {
   });
 
   describe('config.options.devicePixelRatio', function() {
-    beforeEach(function() {
-      this.devicePixelRatio = window.devicePixelRatio;
+    beforeEach(function(ctx) {
+      ctx.devicePixelRatio = window.devicePixelRatio;
       window.devicePixelRatio = 1;
     });
 
-    afterEach(function() {
-      window.devicePixelRatio = this.devicePixelRatio;
+    afterEach(function(ctx) {
+      window.devicePixelRatio = ctx.devicePixelRatio;
     });
 
     // see https://github.com/chartjs/Chart.js/issues/3575
@@ -1480,34 +1518,36 @@ describe('Chart', function() {
   });
 
   describe('config.options.aspectRatio', function() {
-    it('should resize the canvas when the aspectRatio option changes', function(done) {
-      var chart = acquireChart({
-        options: {
-          responsive: true,
-          aspectRatio: 1,
-        }
-      }, {
-        canvas: {
-          style: '',
-          width: 400,
-        },
-      });
-
-      expect(chart).toBeChartOfSize({
-        dw: 400, dh: 400,
-        rw: 400, rh: 400,
-      });
-
-      waitForResize(chart, function() {
-        expect(chart).toBeChartOfSize({
-          dw: 400, dh: 200,
-          rw: 400, rh: 200,
+    it('should resize the canvas when the aspectRatio option changes', function() {
+      return new Promise(done => {
+        var chart = acquireChart({
+          options: {
+            responsive: true,
+            aspectRatio: 1,
+          }
+        }, {
+          canvas: {
+            style: '',
+            width: 400,
+          },
         });
 
-        done();
+        expect(chart).toBeChartOfSize({
+          dw: 400, dh: 400,
+          rw: 400, rh: 400,
+        });
+
+        waitForResize(chart, function() {
+          expect(chart).toBeChartOfSize({
+            dw: 400, dh: 200,
+            rw: 400, rh: 200,
+          });
+
+          done();
+        });
+        chart.options.aspectRatio = 2;
+        chart.resize();
       });
-      chart.options.aspectRatio = 2;
-      chart.resize();
     });
   });
 
@@ -1711,7 +1751,7 @@ describe('Chart', function() {
       var meta = chart.getDatasetMeta(0);
       var point = meta.data[1];
 
-      await jasmine.triggerMouseEvent(chart, 'mousemove', point);
+      await triggerMouseEvent(chart, 'mousemove', point);
       // Check and see if tooltip was displayed
       var tooltip = chart.tooltip;
 
@@ -1813,56 +1853,58 @@ describe('Chart', function() {
       ]
     };
 
-    it ('should notify plugin in correct order', function(done) {
-      var plugin = this.plugin = {};
-      var sequence = [];
+    it ('should notify plugin in correct order', function(ctx) {
+      return new Promise(done => {
+        var plugin = ctx.plugin = {};
+        var sequence = [];
 
-      Object.keys(hooks).forEach(function(group) {
-        hooks[group].forEach(function(name) {
-          plugin[name] = function() {
-            sequence.push(name);
-          };
+        Object.keys(hooks).forEach(function(group) {
+          hooks[group].forEach(function(name) {
+            plugin[name] = function() {
+              sequence.push(name);
+            };
+          });
         });
+
+        var chart = window.acquireChart({
+          type: 'line',
+          data: {datasets: [{}]},
+          plugins: [plugin],
+          options: {
+            responsive: true
+          }
+        }, {
+          wrapper: {
+            style: 'width: 300px'
+          }
+        });
+
+        waitForResize(chart, function() {
+          chart.destroy();
+
+          expect(sequence).toEqual([].concat(
+            hooks.install,
+            hooks.start,
+            hooks.init,
+            hooks.update,
+            hooks.render,
+            hooks.resize,
+            hooks.update,
+            hooks.render,
+            hooks.destroy,
+            hooks.stop,
+            hooks.uninstall
+          ));
+
+          done();
+        });
+        chart.canvas.parentNode.style.width = '400px';
+        chart.canvas.parentNode.style.height = '400px';
       });
-
-      var chart = window.acquireChart({
-        type: 'line',
-        data: {datasets: [{}]},
-        plugins: [plugin],
-        options: {
-          responsive: true
-        }
-      }, {
-        wrapper: {
-          style: 'width: 300px'
-        }
-      });
-
-      waitForResize(chart, function() {
-        chart.destroy();
-
-        expect(sequence).toEqual([].concat(
-          hooks.install,
-          hooks.start,
-          hooks.init,
-          hooks.update,
-          hooks.render,
-          hooks.resize,
-          hooks.update,
-          hooks.render,
-          hooks.destroy,
-          hooks.stop,
-          hooks.uninstall
-        ));
-
-        done();
-      });
-      chart.canvas.parentNode.style.width = '400px';
-      chart.canvas.parentNode.style.height = '400px';
     });
 
-    it ('should notify initially disabled plugin in correct order', function() {
-      var plugin = this.plugin = {id: 'plugin'};
+    it ('should notify initially disabled plugin in correct order', function(ctx) {
+      var plugin = ctx.plugin = {id: 'plugin'};
       var sequence = [];
 
       Object.keys(hooks).forEach(function(group) {
@@ -1910,9 +1952,9 @@ describe('Chart', function() {
       expect(sequence).toEqual(hooks.uninstall);
     });
 
-    it('should not notify before/afterDatasetDraw if dataset is hidden', function() {
+    it('should not notify before/afterDatasetDraw if dataset is hidden', function(ctx) {
       var sequence = [];
-      var plugin = this.plugin = {
+      var plugin = ctx.plugin = {
         beforeDatasetDraw: function(chart, args) {
           sequence.push('before-' + args.index);
         },
@@ -1952,8 +1994,8 @@ describe('Chart', function() {
   });
 
   describe('metasets', function() {
-    beforeEach(function() {
-      this.chart = acquireChart({
+    beforeEach(function(ctx) {
+      ctx.chart = acquireChart({
         type: 'line',
         data: {
           datasets: [
@@ -1965,83 +2007,83 @@ describe('Chart', function() {
         }
       });
     });
-    afterEach(function() {
-      const metasets = this.chart._metasets;
-      expect(metasets.length).toEqual(this.chart.data.datasets.length);
+    afterEach(function(ctx) {
+      const metasets = ctx.chart._metasets;
+      expect(metasets.length).toEqual(ctx.chart.data.datasets.length);
       for (let i = 0; i < metasets.length; i++) {
         expect(metasets[i].index).toEqual(i);
-        expect(metasets[i]._dataset).toEqual(this.chart.data.datasets[i]);
+        expect(metasets[i]._dataset).toEqual(ctx.chart.data.datasets[i]);
       }
     });
-    it('should build metasets array in order', function() {
-      const metasets = this.chart._metasets;
+    it('should build metasets array in order', function(ctx) {
+      const metasets = ctx.chart._metasets;
       expect(metasets[0].order).toEqual(2);
       expect(metasets[1].order).toEqual(1);
       expect(metasets[2].order).toEqual(4);
       expect(metasets[3].order).toEqual(3);
     });
-    it('should build sorted metasets array in correct order', function() {
-      const metasets = this.chart._sortedMetasets;
+    it('should build sorted metasets array in correct order', function(ctx) {
+      const metasets = ctx.chart._sortedMetasets;
       expect(metasets[0].order).toEqual(1);
       expect(metasets[1].order).toEqual(2);
       expect(metasets[2].order).toEqual(3);
       expect(metasets[3].order).toEqual(4);
     });
-    it('should be moved when datasets are removed from beginning', function() {
-      this.chart.data.datasets.splice(0, 2);
-      this.chart.update();
-      const metasets = this.chart._metasets;
+    it('should be moved when datasets are removed from beginning', function(ctx) {
+      ctx.chart.data.datasets.splice(0, 2);
+      ctx.chart.update();
+      const metasets = ctx.chart._metasets;
       expect(metasets[0].order).toEqual(4);
       expect(metasets[1].order).toEqual(3);
     });
-    it('should be moved when datasets are removed from middle', function() {
-      this.chart.data.datasets.splice(1, 2);
-      this.chart.update();
-      const metasets = this.chart._metasets;
+    it('should be moved when datasets are removed from middle', function(ctx) {
+      ctx.chart.data.datasets.splice(1, 2);
+      ctx.chart.update();
+      const metasets = ctx.chart._metasets;
       expect(metasets[0].order).toEqual(2);
       expect(metasets[1].order).toEqual(3);
     });
-    it('should be moved when datasets are inserted', function() {
-      this.chart.data.datasets.splice(1, 0, {label: '1.5', order: 5});
-      this.chart.update();
-      const metasets = this.chart._metasets;
+    it('should be moved when datasets are inserted', function(ctx) {
+      ctx.chart.data.datasets.splice(1, 0, {label: '1.5', order: 5});
+      ctx.chart.update();
+      const metasets = ctx.chart._metasets;
       expect(metasets[0].order).toEqual(2);
       expect(metasets[1].order).toEqual(5);
       expect(metasets[2].order).toEqual(1);
       expect(metasets[3].order).toEqual(4);
       expect(metasets[4].order).toEqual(3);
     });
-    it('should be replaced when dataset is replaced', function() {
-      this.chart.data.datasets.splice(1, 1, {label: '1.5', order: 5});
-      this.chart.update();
-      const metasets = this.chart._metasets;
+    it('should be replaced when dataset is replaced', function(ctx) {
+      ctx.chart.data.datasets.splice(1, 1, {label: '1.5', order: 5});
+      ctx.chart.update();
+      const metasets = ctx.chart._metasets;
       expect(metasets[0].order).toEqual(2);
       expect(metasets[1].order).toEqual(5);
       expect(metasets[2].order).toEqual(4);
       expect(metasets[3].order).toEqual(3);
     });
-    it('should update properly when dataset locations are swapped', function() {
-      const orig = this.chart.data.datasets;
-      this.chart.data.datasets = [orig[0], orig[2], orig[1], orig[3]];
-      this.chart.update();
-      let metasets = this.chart._metasets;
+    it('should update properly when dataset locations are swapped', function(ctx) {
+      const orig = ctx.chart.data.datasets;
+      ctx.chart.data.datasets = [orig[0], orig[2], orig[1], orig[3]];
+      ctx.chart.update();
+      let metasets = ctx.chart._metasets;
       expect(metasets[0].label).toEqual('1');
       expect(metasets[1].label).toEqual('3');
       expect(metasets[2].label).toEqual('2');
       expect(metasets[3].label).toEqual('4');
 
-      this.chart.data.datasets = [{label: 'new', order: 10}, orig[3], orig[2], orig[1], orig[0]];
-      this.chart.update();
-      metasets = this.chart._metasets;
+      ctx.chart.data.datasets = [{label: 'new', order: 10}, orig[3], orig[2], orig[1], orig[0]];
+      ctx.chart.update();
+      metasets = ctx.chart._metasets;
       expect(metasets[0].label).toEqual('new');
       expect(metasets[1].label).toEqual('4');
       expect(metasets[2].label).toEqual('3');
       expect(metasets[3].label).toEqual('2');
       expect(metasets[4].label).toEqual('1');
 
-      this.chart.data.datasets = [orig[3], orig[2], orig[1], {label: 'new', order: 10}];
-      this.chart.update();
-      metasets = this.chart._metasets;
+      ctx.chart.data.datasets = [orig[3], orig[2], orig[1], {label: 'new', order: 10}];
+      ctx.chart.update();
+      metasets = ctx.chart._metasets;
       expect(metasets[0].label).toEqual('4');
       expect(metasets[1].label).toEqual('3');
       expect(metasets[2].label).toEqual('2');
@@ -2050,8 +2092,8 @@ describe('Chart', function() {
   });
 
   describe('_destroyDatasetMeta', function() {
-    beforeEach(function() {
-      this.chart = acquireChart({
+    beforeEach(function(ctx) {
+      ctx.chart = acquireChart({
         type: 'line',
         data: {
           datasets: [
@@ -2063,9 +2105,9 @@ describe('Chart', function() {
         }
       });
     });
-    it('cleans up metasets when the chart is destroyed', function() {
-      this.chart.destroy();
-      expect(this.chart._metasets).toEqual([undefined, undefined, undefined, undefined]);
+    it('cleans up metasets when the chart is destroyed', function(ctx) {
+      ctx.chart.destroy();
+      expect(ctx.chart._metasets).toEqual([undefined, undefined, undefined, undefined]);
     });
   });
 
@@ -2311,7 +2353,7 @@ describe('Chart', function() {
     let props = meta.data[0].getProps(['borderColor']);
     expect(props.options.borderColor).toEqual('red');
 
-    await jasmine.triggerMouseEvent(chart, 'mousemove', {x: point0.x, y: point0.y});
+    await triggerMouseEvent(chart, 'mousemove', {x: point0.x, y: point0.y});
     expect(chart.getActiveElements()).toEqual([{datasetIndex: 0, index: 0, element: point0}]);
     expect(point0.options.borderColor).toEqual('blue');
     expect(point1.options.borderColor).toEqual('red');

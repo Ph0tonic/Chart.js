@@ -1,11 +1,20 @@
-env:
-  jasmine: true
-
+# Vitest globals (`globals: true` in vitest.config.js) and the test utils that
+# test/setup.js exposes on window.
 globals:
+  describe: readonly
+  it: readonly
+  expect: readonly
+  vi: readonly
+  beforeAll: readonly
+  afterAll: readonly
+  beforeEach: readonly
+  afterEach: readonly
   acquireChart: true
   afterEvent: true
   Chart: true
   moment: true
+  specsFromFixtures: true
+  triggerMouseEvent: true
   waitForResize: true
 
 rules:

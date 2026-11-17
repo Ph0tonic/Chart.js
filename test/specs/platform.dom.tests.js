@@ -77,26 +77,28 @@ describe('Platform.dom', function() {
       chart.destroy();
     });
 
-    it('should accept a canvas from an iframe', function(done) {
-      var iframe = document.createElement('iframe');
-      iframe.onload = function() {
-        var doc = iframe.contentDocument;
-        doc.body.innerHTML += '<canvas id="chart"></canvas>';
-        var canvas = doc.getElementById('chart');
-        var chart = new Chart(canvas);
+    it('should accept a canvas from an iframe', function() {
+      return new Promise(done => {
+        var iframe = document.createElement('iframe');
+        iframe.onload = function() {
+          var doc = iframe.contentDocument;
+          doc.body.innerHTML += '<canvas id="chart"></canvas>';
+          var canvas = doc.getElementById('chart');
+          var chart = new Chart(canvas);
 
-        expect(chart).toBeValidChart();
-        expect(chart.canvas).toBe(canvas);
-        expect(chart.ctx).toBe(canvas.getContext('2d'));
+          expect(chart).toBeValidChart();
+          expect(chart.canvas).toBe(canvas);
+          expect(chart.ctx).toBe(canvas.getContext('2d'));
 
-        chart.destroy();
-        canvas.remove();
-        iframe.remove();
+          chart.destroy();
+          canvas.remove();
+          iframe.remove();
 
-        done();
-      };
+          done();
+        };
 
-      document.body.appendChild(iframe);
+        document.body.appendChild(iframe);
+      });
     });
   });
 
@@ -328,42 +330,44 @@ describe('Platform.dom', function() {
       wrapper.parentNode.removeChild(wrapper);
     });
 
-    it('should restore canvas initial values', function(done) {
-      var wrapper = document.createElement('div');
-      var canvas = document.createElement('canvas');
+    it('should restore canvas initial values', function() {
+      return new Promise(done => {
+        var wrapper = document.createElement('div');
+        var canvas = document.createElement('canvas');
 
-      canvas.setAttribute('width', 180);
-      canvas.setAttribute('style', 'width: 512px; height: 480px');
-      wrapper.setAttribute('style', 'width: 450px; height: 450px; position: relative');
+        canvas.setAttribute('width', 180);
+        canvas.setAttribute('style', 'width: 512px; height: 480px');
+        wrapper.setAttribute('style', 'width: 450px; height: 450px; position: relative');
 
-      wrapper.appendChild(canvas);
-      window.document.body.appendChild(wrapper);
+        wrapper.appendChild(canvas);
+        window.document.body.appendChild(wrapper);
 
-      var chart = new Chart(canvas.getContext('2d'), {
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      });
-
-      waitForResize(chart, function() {
-        expect(chart).toBeChartOfSize({
-          dw: 475, dh: 450,
-          rw: 475, rh: 450,
+        var chart = new Chart(canvas.getContext('2d'), {
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
         });
 
-        chart.destroy();
+        waitForResize(chart, function() {
+          expect(chart).toBeChartOfSize({
+            dw: 475, dh: 450,
+            rw: 475, rh: 450,
+          });
 
-        expect(canvas.getAttribute('width')).toBe('180');
-        expect(canvas.getAttribute('height')).toBe(null);
-        expect(canvas.style.width).toBe('512px');
-        expect(canvas.style.height).toBe('480px');
-        expect(canvas.style.display).toBe('');
+          chart.destroy();
 
-        wrapper.parentNode.removeChild(wrapper);
-        done();
+          expect(canvas.getAttribute('width')).toBe('180');
+          expect(canvas.getAttribute('height')).toBe(null);
+          expect(canvas.style.width).toBe('512px');
+          expect(canvas.style.height).toBe('480px');
+          expect(canvas.style.display).toBe('');
+
+          wrapper.parentNode.removeChild(wrapper);
+          done();
+        });
+        wrapper.style.width = '475px';
       });
-      wrapper.style.width = '475px';
     });
   });
 
@@ -389,7 +393,7 @@ describe('Platform.dom', function() {
         plugins: [plugin]
       });
 
-      await jasmine.triggerMouseEvent(chart, 'click', {
+      await triggerMouseEvent(chart, 'click', {
         x: chart.width / 2,
         y: chart.height / 2
       });
