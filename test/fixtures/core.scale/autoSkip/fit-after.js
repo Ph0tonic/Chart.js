@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   description: 'https://github.com/chartjs/Chart.js/issues/3694',
   tolerance: 0.002,
   config: {

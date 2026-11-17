@@ -13,7 +13,7 @@ var angles = Array.apply(null, Array(17)).map(function(v, i) {
   return -180 + i * 22.5;
 });
 
-module.exports = {
+export default {
   config: {
     type: 'bubble',
     data: {

@@ -1,7 +1,7 @@
 const data = Array.from({length: 42}, (_, i) => i + 1);
 const labels = data.map(v => 'tick' + v);
 
-module.exports = {
+export default {
   description: 'https://github.com/chartjs/Chart.js/issues/10856',
   config: {
     type: 'bar',

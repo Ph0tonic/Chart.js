@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   description: 'showLine option should not draw a line if undefined',
   config: {
     type: 'scatter',

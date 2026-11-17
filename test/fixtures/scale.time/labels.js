@@ -6,7 +6,7 @@ var timeOpts = {
   }
 };
 
-module.exports = {
+export default {
   threshold: 0.01,
   tolerance: 0.002,
   config: {

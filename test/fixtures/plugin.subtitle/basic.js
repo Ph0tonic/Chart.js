@@ -1,5 +1,5 @@
 
-module.exports = {
+export default {
   config: {
     type: 'scatter',
     data: {

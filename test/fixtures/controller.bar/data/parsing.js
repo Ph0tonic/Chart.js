@@ -1,6 +1,6 @@
 const data = [{x: 'Jan', net: 100, cogs: 50, gm: 50}, {x: 'Feb', net: 120, cogs: 55, gm: 75}];
 
-module.exports = {
+export default {
   config: {
     type: 'bar',
     data: {

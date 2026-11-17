@@ -1,6 +1,6 @@
 const minBarLength = 50;
 
-module.exports = {
+export default {
   config: {
     type: 'bar',
     data: {

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   description: 'https://github.com/chartjs/Chart.js/issues/9334',
   config: {
     type: 'line',

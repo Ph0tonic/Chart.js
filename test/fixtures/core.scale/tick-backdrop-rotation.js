@@ -4,7 +4,7 @@ const grid = {
 const title = {
   display: false,
 };
-module.exports = {
+export default {
   tolerance: 0.0016,
   config: {
     type: 'line',

@@ -6,7 +6,7 @@ const data = [
   {y: 9, x: 18},
 ];
 
-module.exports = {
+export default {
   config: {
     type: 'line',
     data: {

@@ -19,7 +19,7 @@ function makeDs(label, offset) {
 const dsA = makeDs('A', 0);
 const dsB = makeDs('B', 1);
 
-module.exports = {
+export default {
   config: {
     type: 'scatter',
     data: {

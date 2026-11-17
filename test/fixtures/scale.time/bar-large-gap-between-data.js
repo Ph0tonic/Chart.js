@@ -1,6 +1,6 @@
 var date = moment('May 24 2020', 'MMM DD YYYY');
 
-module.exports = {
+export default {
   threshold: 0.05,
   config: {
     type: 'bar',

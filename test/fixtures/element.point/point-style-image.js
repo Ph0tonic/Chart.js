@@ -20,7 +20,7 @@ imageContext.lineTo(20, 30);
 imageContext.closePath();
 imageContext.fill();
 
-module.exports = {
+export default {
   config: {
     type: 'line',
     data: {

@@ -12,7 +12,7 @@ var pattern = patternContext.createPattern(patternCanvas, 'repeat');
 
 var gradient;
 
-module.exports = {
+export default {
   config: {
     type: 'line',
     data: {

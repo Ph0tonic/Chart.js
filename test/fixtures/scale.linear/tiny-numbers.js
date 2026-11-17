@@ -1,6 +1,6 @@
 // Should generate max and min that are not equal when data contains values that are very close to each other
 
-module.exports = {
+export default {
   config: {
     type: 'scatter',
     data: {

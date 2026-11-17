@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   description: 'showLine option should draw a line if true',
   config: {
     type: 'scatter',

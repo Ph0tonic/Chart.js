@@ -6,7 +6,7 @@ for (let rad = 0; rad <= Math.PI * 2; rad += Math.PI / 45) {
   });
 }
 
-module.exports = {
+export default {
   config: {
     type: 'line',
     data: {

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   config: {
     data: {
       labels: [0, 1, 2, 3],

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   threshold: 0.01,
   config: {
     type: 'line',

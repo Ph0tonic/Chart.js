@@ -79,7 +79,7 @@ const data3 = [
   }
 ];
 
-module.exports = {
+export default {
   description: 'https://github.com/chartjs/Chart.js/issues/5139',
   config: {
     type: 'bar',

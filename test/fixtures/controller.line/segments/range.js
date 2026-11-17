@@ -10,7 +10,7 @@ function xy(ctx, xr, yr) {
   return x(ctx, xr) && y(ctx, yr);
 }
 
-module.exports = {
+export default {
   config: {
     type: 'line',
     data: {

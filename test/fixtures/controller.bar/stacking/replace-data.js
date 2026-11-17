@@ -19,7 +19,7 @@ var barChartData = {
   ]
 };
 
-module.exports = {
+export default {
   description: 'https://github.com/chartjs/Chart.js/issues/8614',
   config: {
     type: 'bar',

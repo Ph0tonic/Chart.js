@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   tolerance: 0.01,
   config: {
     type: 'radar',

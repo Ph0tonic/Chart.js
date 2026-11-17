@@ -15,7 +15,7 @@ for (let i = 0; i < 200; i++) {
   }
 }
 
-module.exports = {
+export default {
   config: {
     type: 'line',
     data: {

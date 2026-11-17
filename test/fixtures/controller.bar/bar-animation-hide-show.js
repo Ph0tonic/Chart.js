@@ -3,7 +3,7 @@ canvas.width = 512;
 canvas.height = 512;
 const ctx = canvas.getContext('2d');
 
-module.exports = {
+export default {
   config: {
     type: 'bar',
     data: {

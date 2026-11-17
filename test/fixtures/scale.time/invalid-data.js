@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   description: 'Invalid data, https://github.com/chartjs/Chart.js/issues/5563',
   config: {
     type: 'line',

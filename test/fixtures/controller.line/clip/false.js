@@ -7,7 +7,7 @@ for (let x = 0.95; x < 1.15; x += 0.001) {
   data.push({x, y: 2.1 - x});
 }
 
-module.exports = {
+export default {
   config: {
     type: 'scatter',
     data: {

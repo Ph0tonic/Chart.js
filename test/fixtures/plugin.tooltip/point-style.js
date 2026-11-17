@@ -10,7 +10,7 @@ function newDataset(pointStyle, i) {
     showLine: false
   };
 }
-module.exports = {
+export default {
   config: {
     type: 'line',
     data: {

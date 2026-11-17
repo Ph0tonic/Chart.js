@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   threshold: 0.05,
   tolerance: 0.002,
   config: {

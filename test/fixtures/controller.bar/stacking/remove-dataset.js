@@ -76,7 +76,7 @@ var barChartData = {
   ]
 };
 
-module.exports = {
+export default {
   config: {
     type: 'bar',
     data: barChartData,

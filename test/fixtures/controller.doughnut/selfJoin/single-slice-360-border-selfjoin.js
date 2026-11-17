@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   tolerance: 0.015,
   config: {
     type: 'doughnut',

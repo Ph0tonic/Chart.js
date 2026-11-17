@@ -9,7 +9,7 @@ const getGradient = (context) => {
   return gradient;
 };
 
-module.exports = {
+export default {
   config: {
     type: 'line',
     data: {

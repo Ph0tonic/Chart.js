@@ -22,7 +22,7 @@ const data = {
   }]
 };
 
-module.exports = {
+export default {
   description: 'https://github.com/chartjs/Chart.js/issues/10215',
   config: {
     type: 'bar',

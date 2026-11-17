@@ -2,7 +2,7 @@ function newDateFromRef(days) {
   return moment('01/01/2015 12:00', 'DD/MM/YYYY HH:mm').add(days, 'd').toDate();
 }
 
-module.exports = {
+export default {
   threshold: 0.01,
   tolerance: 0.003,
   config: {

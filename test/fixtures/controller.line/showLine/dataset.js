@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   description: 'should draw all elements except lines turned off per dataset',
   config: {
     type: 'line',

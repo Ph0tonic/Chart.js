@@ -4,7 +4,7 @@ const grid = {
 const title = {
   display: false,
 };
-module.exports = {
+export default {
   config: {
     type: 'line',
     options: {

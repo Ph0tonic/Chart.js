@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   description: 'should draw all elements except lines',
   config: {
     type: 'line',

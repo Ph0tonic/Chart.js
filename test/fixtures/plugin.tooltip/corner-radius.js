@@ -5,7 +5,7 @@ for (let x = 0; x < 3; x++) {
   }
 }
 
-module.exports = {
+export default {
   config: {
     type: 'scatter',
     data: {

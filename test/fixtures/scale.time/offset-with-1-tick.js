@@ -33,7 +33,7 @@ const data = {
   ]
 };
 
-module.exports = {
+export default {
   description: 'https://github.com/chartjs/Chart.js/issues/8718',
   config: {
     type: 'bar',

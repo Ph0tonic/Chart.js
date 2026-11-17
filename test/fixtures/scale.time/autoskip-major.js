@@ -5,7 +5,7 @@ for (var i = 0; i < 60; i++) {
   date = date.clone().add(1, 'month');
 }
 
-module.exports = {
+export default {
   threshold: 0.05,
   config: {
     type: 'line',

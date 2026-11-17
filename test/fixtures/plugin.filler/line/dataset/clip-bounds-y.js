@@ -1,7 +1,7 @@
 const labels = [1, 2, 3, 4, 5, 6, 7];
 const values = [65, 59, 80, 81, 56, 55, 40];
 
-module.exports = {
+export default {
   description: 'https://github.com/chartjs/Chart.js/issues/12052',
   config: {
     type: 'line',
